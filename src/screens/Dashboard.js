@@ -17,7 +17,7 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
   ];
 
   const navItems = [
-    { label: 'Dashboard', target: 'dashboard' },
+    { label: 'Planlar', target: 'dashboard' },
     { label: 'Simulyator', target: 'simulator' },
     { label: 'AI Tövsiyəçi', target: 'ai' },
     { label: 'Premium', target: 'subscription' },
@@ -25,10 +25,10 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          {/* Logo */}
+
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
               <Building className="w-5 h-5 text-white" />
@@ -36,7 +36,7 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
             <h1 className="text-xl font-bold text-gray-900">MALİMAX</h1>
           </div>
 
-          {/* Desktop nav */}
+
           <nav className="hidden md:flex space-x-6">
             {navItems.map(item => (
               <button
@@ -49,7 +49,6 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
             ))}
           </nav>
 
-          {/* Mobile hamburger button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -60,7 +59,6 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
           </div>
         </div>
 
-        {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden px-4 pb-4 space-y-2">
             {navItems.map(item => (
@@ -68,7 +66,7 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
                 key={item.target}
                 onClick={() => {
                   onNavigate(item.target);
-                  setIsMenuOpen(false); // klikləyəndə bağla
+                  setIsMenuOpen(false); 
                 }}
                 className="w-full text-left px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100"
               >
@@ -79,20 +77,17 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
         )}
       </header>
 
-      {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* KPIs */}
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {kpis.map((kpi, index) => <KpiCard key={index} {...kpi} delay={animateCards ? index * 100 : 0} />)}
         </div>
 
-        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <RevenueExpensesChart data={financialData.monthlyData} />
           <CashflowChart data={financialData.monthlyData} />
         </div>
 
-        {/* Expense & Payments */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <ExpensePieChart data={financialData.expenseBreakdown} />
           <div className="lg:col-span-2">
