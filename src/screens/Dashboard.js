@@ -24,11 +24,31 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
             </div>
             <h1 className="text-xl font-bold text-gray-900">MALİMAX</h1>
           </div>
-          <nav className="flex space-x-6">
-            <button onClick={() => onNavigate('dashboard')} className="px-3 py-2 rounded-lg font-medium text-blue-700 bg-blue-100">Dashboard</button>
-            <button onClick={() => onNavigate('simulator')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">Simulyator</button>
-            <button onClick={() => onNavigate('ai')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">AI Tövsiyəçi</button>
-            <button onClick={() => onNavigate('subscription')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">Premium</button>
+          <nav className="flex flex-wrap gap-2 sm:space-x-6">
+            <button 
+              onClick={() => onNavigate('dashboard')} 
+              className="px-3 py-2 rounded-lg font-medium text-blue-700 bg-blue-100 w-full sm:w-auto"
+            >
+              Dashboard
+            </button>
+            <button 
+              onClick={() => onNavigate('simulator')} 
+              className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900 w-full sm:w-auto"
+            >
+              Simulyator
+            </button>
+            <button 
+              onClick={() => onNavigate('ai')} 
+              className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900 w-full sm:w-auto"
+            >
+              AI Tövsiyəçi
+            </button>
+            <button 
+              onClick={() => onNavigate('subscription')} 
+              className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900 w-full sm:w-auto"
+            >
+              Premium
+            </button>
           </nav>
         </div>
       </header>
