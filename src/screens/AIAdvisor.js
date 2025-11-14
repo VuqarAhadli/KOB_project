@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, useReducer, useMemo } from 'react';
 import { Brain, Target, TrendingUp, AlertCircle, Lightbulb, CheckCircle, Clock, DollarSign, BarChart3, PieChart } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 // Financial Context (same as previous components)
 const ACTIONS = {
   SET_MONTHLY_DATA: 'SET_MONTHLY_DATA',
@@ -505,7 +505,7 @@ export const AIRecommendationsList = () => {
 };
 
 // Complete AI Advisor Component
-import { useNavigate } from 'react-router-dom';
+
 
 const AIAdvisor = ({ onNavigate }) => {
   return (
