@@ -15,28 +15,26 @@ const Dashboard = ({ financialData, animateCards }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {kpis.map((kpi, index) => <KpiCard key={index} {...kpi} delay={animateCards ? index * 100 : 0} />)}
-        </div>
+    <main className="max-w-7xl mx-auto px-4 py-6">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {kpis.map((kpi, index) => <KpiCard key={index} {...kpi} delay={animateCards ? index * 100 : 0} />)}
+      </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <RevenueExpensesChart data={financialData.monthlyData} />
-          <CashflowChart data={financialData.monthlyData} />
-        </div>
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <RevenueExpensesChart data={financialData.monthlyData} />
+        <CashflowChart data={financialData.monthlyData} />
+      </div>
 
-        {/* Expense Pie & Upcoming Payments */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <ExpensePieChart data={financialData.expenseBreakdown} />
-          <div className="lg:col-span-2">
-            <UpcomingPayments payments={financialData.upcomingPayments} />
-          </div>
+      {/* Expense Pie & Upcoming Payments */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <ExpensePieChart data={financialData.expenseBreakdown} />
+        <div className="lg:col-span-2">
+          <UpcomingPayments payments={financialData.upcomingPayments} />
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 
