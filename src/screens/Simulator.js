@@ -346,35 +346,39 @@ const ScenarioResults = ({ scenario }) => {
         <div className="p-4 sm:p-6">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={results.projections}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="month" stroke="#6b7280" style={{ fontSize: '12px' }} />
-              <YAxis stroke="#6b7280" tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} style={{ fontSize: '12px' }} />
-              <Tooltip 
-                formatter={(value, name) => [
-                  `${value.toLocaleString()} ₼`, 
-                  name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnoz'
-                ]}
-                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-              />
-              <Legend wrapperStyle={{ fontSize: '12px' }} />
-              <Line 
-                type="monotone" 
-                dataKey="originalProjection" 
-                stroke="#94a3b8" 
-                strokeWidth={2}
-                strokeDasharray="5 5"
-                name="Cari proqnoz"
-                dot={false}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="scenarioProjection" 
-                stroke="#6366f1" 
-                strokeWidth={3}
-                name="Ssenari proqnozu"
-                dot={(props) => <circle {...props} r={4} fill="#6366f1" />}
-              />
-            </LineChart>
+  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+  <XAxis dataKey="month" stroke="#6b7280" style={{ fontSize: '12px' }} />
+  <YAxis stroke="#6b7280" tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} style={{ fontSize: '12px' }} />
+  <Tooltip 
+    formatter={(value, name) => [
+      `${value.toLocaleString()} ₼`, 
+      name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnoz'
+    ]}
+    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+  />
+  <Legend wrapperStyle={{ fontSize: '12px' }} />
+  
+  <Line 
+    type="monotone" 
+    dataKey="originalProjection" 
+    stroke="#94a3b8" 
+    strokeWidth={2}
+    strokeDasharray="5 5"
+    name="Cari proqnoz"
+    dot={false}
+  />
+  
+  <Line 
+    type="monotone" 
+    dataKey="scenarioProjection" 
+    stroke="#6366f1" 
+    strokeWidth={3}
+    name="Ssenari proqnozu"
+    dot={false} 
+    activeDot={{ r: 5, fill: '#6366f1', stroke: '#fff', strokeWidth: 2 }}
+  />
+</LineChart>
+
           </ResponsiveContainer>
         </div>
       </div>
@@ -497,10 +501,8 @@ const Simulator = ({ onNavigate }) => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Title */}
           <div className="text-center mb-8">
-           <h1 className="text-2xl sm:text-3xl font-bold relative inline-block leading-tight">
-  <span className="text-transparent" style={{ backgroundImage: 'linear-gradient(to right, #2563eb, #8b5cf6)', WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'unset' }}>
-    Maliyyə Ssenari Simulyatoru
-  </span>
+           <h1 className="text-2xl sm:text-3xl font-bold" style={{ background: 'linear-gradient(to right, #2563eb, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1.2 }}>
+  Maliyyə Ssenari Simulyatoru
 </h1>
 
 
