@@ -1,64 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginScreen from './components/LoginScreen';
 import Dashboard from './screens/Dashboard';
-import { mockFinancialData } from './data/mockFinancialData';
 import Simulator from './screens/Simulator';
 import AIAdvisor from './screens/AIAdvisor';
 import Subscription from './screens/Subscription';
 import Navbar from './Navbar';
-
-// Protected Route Component with Navbar
-function ProtectedRoute({ children, user }) {
-  if (!user) return <Navigate to="/login" replace />;
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      {children}
-    </div>
-  );
-}
-
-function LoginWrapper({ onLogin }) {
-  const navigate = useNavigate();
-  const handleLoginSuccess = () => {
-    onLogin();
-    navigate('/dashboard');
-  };
-  return <LoginScreen onLogin={handleLoginSuccess} />;
-}
-
-function DashboardWrapper({ financialData, animateCards }) {
-  return <Dashboard financialData={financialData} animateCards={animateCards} />;
-}
-
-function SimulatorWrapper() {
-  return <Simulator />;
-}
-
-function AIAdvisorWrapper() {
-  return <AIAdvisor />;
-}
-
-function SubscriptionWrapper() {
-  return <Subscription />;
-}
+import { mockFinancialData } from './data/mockFinancialData';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [animateCards, setAnimateCards] = useState(false);
 
-  // Check for existing session on mount
   useEffect(() => {
     const savedUser = sessionStorage.getItem('user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
   }, []);
-
-  useEffect(() => {
-    if (user) setTimeout(() => setAnimateCards(true), 300);
-  }, [user]);
 
   const handleLogin = () => {
     const userData = { name: 'Demo KOB', company: 'procrastitans' };
@@ -71,51 +29,29 @@ function App() {
     sessionStorage.removeItem('user');
   };
 
+  if (!user) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="*" element={<LoginScreen onLogin={handleLogin} />} />
+        </Routes>
+      </Router>
+    );
+  }
+
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
-        />
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/dashboard" replace /> : <LoginWrapper onLogin={handleLogin} />}
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute user={user}>
-              <DashboardWrapper financialData={mockFinancialData} animateCards={animateCards} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/simulator"
-          element={
-            <ProtectedRoute user={user}>
-              <SimulatorWrapper />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ai"
-          element={
-            <ProtectedRoute user={user}>
-              <AIAdvisorWrapper />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <ProtectedRoute user={user}>
-              <SubscriptionWrapper />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard financialData={mockFinancialData} animateCards={true} />} />
+          <Route path="/simulator" element={<Simulator />} />
+          <Route path="/ai" element={<AIAdvisor />} />
+          <Route path="/subscription" element={<Subscription />} />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
