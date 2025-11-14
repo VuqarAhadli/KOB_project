@@ -6,11 +6,17 @@ import { mockFinancialData } from './data/mockFinancialData';
 import Simulator from './screens/Simulator';
 import AIAdvisor from './screens/AIAdvisor';
 import Subscription from './screens/Subscription';
-import Navbar from './Navbar';
+import Navbar from './components/Navbar';
 
+// Protected Route Component with Navbar
 function ProtectedRoute({ children, user }) {
   if (!user) return <Navigate to="/login" replace />;
-  return children;
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 }
 
 function LoginWrapper({ onLogin }) {
@@ -23,29 +29,19 @@ function LoginWrapper({ onLogin }) {
 }
 
 function DashboardWrapper({ financialData, animateCards, user }) {
-  const navigate = useNavigate();
-  return (
-    <Dashboard
-      financialData={financialData}
-      animateCards={animateCards}
-      onNavigate={(screen) => navigate(`/${screen}`)}
-    />
-  );
+  return <Dashboard financialData={financialData} animateCards={animateCards} />;
 }
 
 function SimulatorWrapper() {
-  const navigate = useNavigate();
-  return <Simulator onNavigate={(screen) => navigate(`/${screen}`)} />;
+  return <Simulator />;
 }
 
 function AIAdvisorWrapper() {
-  const navigate = useNavigate();
-  return <AIAdvisor onNavigate={(screen) => navigate(`/${screen}`)} />;
+  return <AIAdvisor />;
 }
 
 function SubscriptionWrapper() {
-  const navigate = useNavigate();
-  return <Subscription onNavigate={(screen) => navigate(`/${screen}`)} />;
+  return <Subscription />;
 }
 
 function App() {
@@ -73,54 +69,51 @@ function App() {
   };
 
   return (
-    <>
-      {user && <Navbar onLogout={handleLogout} />}
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
-          />
-          <Route
-            path="/login"
-            element={user ? <Navigate to="/dashboard" replace /> : <LoginWrapper onLogin={handleLogin} />}
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute user={user}>
-                <DashboardWrapper financialData={mockFinancialData} animateCards={animateCards} user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/simulator"
-            element={
-              <ProtectedRoute user={user}>
-                <SimulatorWrapper />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ai"
-            element={
-              <ProtectedRoute user={user}>
-                <AIAdvisorWrapper />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/subscription"
-            element={
-              <ProtectedRoute user={user}>
-                <SubscriptionWrapper />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/dashboard" replace /> : <LoginWrapper onLogin={handleLogin} />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute user={user}>
+              <DashboardWrapper financialData={mockFinancialData} animateCards={animateCards} user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/simulator"
+          element={
+            <ProtectedRoute user={user}>
+              <SimulatorWrapper />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ai"
+          element={
+            <ProtectedRoute user={user}>
+              <AIAdvisorWrapper />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            <ProtectedRoute user={user}>
+              <SubscriptionWrapper />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 
