@@ -372,7 +372,7 @@ const ScenarioResults = ({ scenario }) => {
                 stroke="#6366f1" 
                 strokeWidth={3}
                 name="Ssenari proqnozu"
-                dot={{ fill: '#6366f1', r: 4 }}
+                dot={(props) => <circle {...props} r={4} fill="#6366f1" />}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -497,9 +497,10 @@ const Simulator = ({ onNavigate }) => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Title */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Maliyyə Ssenari Simulyatoru
-            </h1>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-normal break-words">
+  Maliyyə Ssenari Simulyatoru
+</h1>
+
             <p className="text-gray-600 mt-1 text-sm sm:text-base">
               Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin
             </p>
