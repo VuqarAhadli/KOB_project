@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useReducer, useMemo } from 'react';
 import { Calculator, Brain, TrendingUp, TrendingDown, AlertTriangle, DollarSign, Info } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
-import { mockFinancialData } from './data/mockFinancialData';
+import { mockFinancialData } from '../data/mockFinancialData';
 
 // Financial Context
 const ACTIONS = {
