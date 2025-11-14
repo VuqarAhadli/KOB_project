@@ -13,9 +13,7 @@ function App() {
 
   useEffect(() => {
     const savedUser = sessionStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
   const handleLogin = () => {
@@ -24,21 +22,16 @@ function App() {
     sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    sessionStorage.removeItem('user');
-  };
-
+  // Not logged in - show login
   if (!user) {
     return (
       <Router>
-        <Routes>
-          <Route path="*" element={<LoginScreen onLogin={handleLogin} />} />
-        </Routes>
+        <LoginScreen onLogin={handleLogin} />
       </Router>
     );
   }
 
+  // Logged in - show navbar + content
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
@@ -49,7 +42,6 @@ function App() {
           <Route path="/simulator" element={<Simulator />} />
           <Route path="/ai" element={<AIAdvisor />} />
           <Route path="/subscription" element={<Subscription />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </div>
     </Router>
