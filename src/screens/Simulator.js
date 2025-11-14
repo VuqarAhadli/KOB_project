@@ -488,34 +488,23 @@ const ScenarioResults = ({ scenario }) => {
 };
 
 // Main Simulator
-const Simulator = ({ onNavigate }) => {
+onst Simulator = ({ onNavigate }) => {
   const [currentScenario, setCurrentScenario] = useState(null);
 
   return (
     <FinancialProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 pb-8">
-        <header className="bg-white shadow-md border-b border-gray-200 mb-6 sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Maliyyə Ssenari Simulyatoru
-                </h1>
-                <p className="text-gray-600 mt-1 text-sm sm:text-base">Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin</p>
-              </div>
-              {onNavigate && (
-                <button
-                  onClick={() => onNavigate('dashboard')}
-                  className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg text-sm sm:text-base whitespace-nowrap"
-                >
-                  ← Ana Səhifə
-                </button>
-              )}
-            </div>
-          </div>
-        </header>
-
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Title */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Maliyyə Ssenari Simulyatoru
+            </h1>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">
+              Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             <div className="lg:col-span-1">
               <div className="sticky top-24">
@@ -531,5 +520,3 @@ const Simulator = ({ onNavigate }) => {
     </FinancialProvider>
   );
 };
-
-export default Simulator;
