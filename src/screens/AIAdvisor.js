@@ -1,7 +1,9 @@
 import React, { useState, createContext, useContext, useReducer, useMemo } from 'react';
 import { Brain, Target, TrendingUp, AlertCircle, Lightbulb, CheckCircle, Clock, DollarSign, BarChart3, PieChart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-// Financial Context (same as previous components)
+import { mockFinancialData } from '../data/mockFinancialData';
+
+// Financial Context
 const ACTIONS = {
   SET_MONTHLY_DATA: 'SET_MONTHLY_DATA',
   ADD_MONTH_DATA: 'ADD_MONTH_DATA',
@@ -13,27 +15,12 @@ const ACTIONS = {
 
 const initialState = {
   user: null,
-  monthlyData: [
-    { month: 'Yan', gelir: 43400, xerc: 32000, date: '2025-01' },
-    { month: 'Fev', gelir: 52000, xerc: 35000, date: '2025-02' },
-    { month: 'Mar', gelir: 48000, xerc: 31000, date: '2025-03' },
-    { month: 'Apr', gelir: 58000, xerc: 38000, date: '2025-04' },
-    { month: 'May', gelir: 62000, xerc: 42000, date: '2025-05' },
-    { month: 'İyn', gelir: 55000, xerc: 39000, date: '2025-06' },
-    { month: 'İyl', gelir: 60000, xerc: 40000, date: '2025-07' },
-    { month: 'Avq', gelir: 61000, xerc: 45000, date: '2025-08' },
-    { month: 'Sen', gelir: 56000, xerc: 48000, date: '2025-09' },
-    { month: 'Okt', gelir: 62000, xerc: 50000, date: '2025-10' },
-    { month: 'Noy', gelir: 70000, xerc: 52000, date: '2025-11' },
-    { month: 'Dek', gelir: 59000, xerc: 51000, date: '2025-12' }
-  ],
-  expenseCategories: [
-    { name: 'Əməkhaqqı', percentage: 38.5, color: '#8884d8' },
-    { name: 'İcarə', percentage: 20.5, color: '#82ca9d' },
-    { name: 'Utilities', percentage: 7.7, color: '#ffc658' },
-    { name: 'Marketing', percentage: 17.9, color: '#ff7300' },
-    { name: 'Digər', percentage: 15.4, color: '#00ff88' }
-  ]
+  monthlyData: mockFinancialData.monthlyData,
+  expenseCategories: mockFinancialData.expenseBreakdown.map(exp => ({
+    name: exp.name,
+    percentage: (exp.value / mockFinancialData.kpi.totalExpenses) * 100,
+    color: exp.color
+  }))
 };
 
 const financialReducer = (state, action) => {
@@ -96,7 +83,6 @@ const FinancialProvider = ({ children }) => {
     const avgExpenses = lastThreeMonths.reduce((sum, month) => sum + month.xerc, 0) / lastThreeMonths.length;
     const avgProfit = avgRevenue - avgExpenses;
 
-    // Calculate expense efficiency
     const expenseToRevenueRatio = avgExpenses / avgRevenue;
     const profitMargin = (avgProfit / avgRevenue) * 100;
 
@@ -124,9 +110,9 @@ const useFinancial = () => {
 };
 
 // AI Recommendation Card Component
-export const AIRecommendationCard = ({ recommendation, onImplement, onDismiss }) => {
+const AIRecommendationCard = ({ recommendation, onImplement, onDismiss }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [status, setStatus] = useState('pending'); // pending, implemented, dismissed
+  const [status, setStatus] = useState('pending');
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -171,7 +157,6 @@ export const AIRecommendationCard = ({ recommendation, onImplement, onDismiss })
       
       <p className="text-gray-600 mb-4">{recommendation.description}</p>
       
-      {/* Potential Impact */}
       {(recommendation.savings || recommendation.potential) && (
         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
           {recommendation.savings && (
@@ -189,7 +174,6 @@ export const AIRecommendationCard = ({ recommendation, onImplement, onDismiss })
         </div>
       )}
 
-      {/* Detailed Steps - Expandable */}
       {recommendation.steps && (
         <div className="mb-4">
           <button
@@ -220,7 +204,6 @@ export const AIRecommendationCard = ({ recommendation, onImplement, onDismiss })
         </div>
       )}
 
-      {/* Action Buttons */}
       {status === 'pending' && (
         <div className="flex space-x-3">
           <button
@@ -255,16 +238,13 @@ export const AIRecommendationCard = ({ recommendation, onImplement, onDismiss })
 };
 
 // AI Insights Dashboard Component
-export const AIInsightsDashboard = () => {
+const AIInsightsDashboard = () => {
   const { calculations } = useFinancial();
   
   const insights = useMemo(() => {
     const { trends, kpi, expenseBreakdown } = calculations;
-    
-    // Generate insights based on data
     const insights = [];
     
-    // Cash flow insight
     if (kpi.cashflow > 100000) {
       insights.push({
         type: 'positive',
@@ -283,7 +263,6 @@ export const AIInsightsDashboard = () => {
       });
     }
 
-    // Profit margin insight
     if (trends.profitMargin > 20) {
       insights.push({
         type: 'positive',
@@ -302,7 +281,6 @@ export const AIInsightsDashboard = () => {
       });
     }
 
-    // Growth trend insight
     if (kpi.growthRate > 10) {
       insights.push({
         type: 'positive',
@@ -313,7 +291,6 @@ export const AIInsightsDashboard = () => {
       });
     }
 
-    // Expense analysis
     const salaryExpense = expenseBreakdown.find(exp => exp.name === 'Əməkhaqqı');
     if (salaryExpense && salaryExpense.percentage > 40) {
       insights.push({
@@ -356,11 +333,10 @@ export const AIInsightsDashboard = () => {
 };
 
 // Generate AI Recommendations
-export const generateAIRecommendations = (calculations) => {
+const generateAIRecommendations = (calculations) => {
   const { trends, kpi, expenseBreakdown } = calculations;
   const recommendations = [];
 
-  // Expense optimization recommendations
   const marketingExpense = expenseBreakdown.find(exp => exp.name === 'Marketing');
   if (marketingExpense && marketingExpense.percentage > 15) {
     recommendations.push({
@@ -379,7 +355,6 @@ export const generateAIRecommendations = (calculations) => {
     });
   }
 
-  // Revenue growth recommendations
   if (kpi.growthRate < 5) {
     recommendations.push({
       id: 'revenue-growth',
@@ -397,7 +372,6 @@ export const generateAIRecommendations = (calculations) => {
     });
   }
 
-  // Cash flow risk management
   if (kpi.cashflow / trends.avgExpenses < 3) {
     recommendations.push({
       id: 'cash-flow-management',
@@ -414,7 +388,6 @@ export const generateAIRecommendations = (calculations) => {
     });
   }
 
-  // Operational efficiency
   const salaryExpense = expenseBreakdown.find(exp => exp.name === 'Əməkhaqqı');
   if (salaryExpense && salaryExpense.percentage > 35) {
     recommendations.push({
@@ -437,7 +410,7 @@ export const generateAIRecommendations = (calculations) => {
 };
 
 // AI Recommendations List Component
-export const AIRecommendationsList = () => {
+const AIRecommendationsList = () => {
   const { calculations } = useFinancial();
   const [implementedCount, setImplementedCount] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
@@ -460,7 +433,6 @@ export const AIRecommendationsList = () => {
 
   return (
     <div className="space-y-6">
-      {/* Statistics */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
@@ -481,7 +453,6 @@ export const AIRecommendationsList = () => {
         </div>
       </div>
 
-      {/* Recommendations */}
       <div className="space-y-4">
         {recommendations.map((recommendation) => (
           <AIRecommendationCard
@@ -505,9 +476,9 @@ export const AIRecommendationsList = () => {
 };
 
 // Complete AI Advisor Component
+const AIAdvisor = () => {
+  const navigate = useNavigate();
 
-
-const AIAdvisor = ({ onNavigate }) => {
   return (
     <FinancialProvider>
       <div className="min-h-screen bg-gray-50">
@@ -518,7 +489,7 @@ const AIAdvisor = ({ onNavigate }) => {
               <p className="text-gray-600">Ağıllı tövsiyələr və avtomatik maliyyə optimizasiyası</p>
             </div>
             <button
-              onClick={() => onNavigate('dashboard')} 
+              onClick={() => navigate('/dashboard')} 
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors"
             >
               ← Geri
