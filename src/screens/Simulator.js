@@ -345,36 +345,47 @@ const ScenarioResults = ({ scenario }) => {
         </div>
         <div className="p-4 sm:p-6">
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
+           }>
+  <LineChart data={results.projections} isAnimationActive={false}>
     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-    <XAxis dataKey="month" stroke="#6b7280" style={{ fontSize: '12px' }} />
-    <YAxis stroke="#6b7280" tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} style={{ fontSize: '12px' }} />
-    <Tooltip 
+    <XAxis
+      dataKey="month"
+      stroke="#6b7280"
+      style={{ fontSize: '12px' }}
+    />
+    <YAxis
+      stroke="#6b7280"
+      tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
+      style={{ fontSize: '12px' }}
+    />
+    <Tooltip
       formatter={(value, name) => [
-        `${value.toLocaleString()} ₼`, 
+        `${value.toLocaleString()} ₼`,
         name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnoz'
       ]}
-      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+      contentStyle={{
+        backgroundColor: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px'
+      }}
     />
     <Legend wrapperStyle={{ fontSize: '12px' }} />
-
-    <Line 
-      type="monotone" 
-      dataKey="originalProjection" 
-      stroke="#94a3b8" 
+    <Line
+      type="monotone"
+      dataKey="originalProjection"
+      stroke="#94a3b8"
       strokeWidth={2}
       strokeDasharray="5 5"
       name="Cari proqnoz"
-      dot={(props) => <circle {...props} r={4} fill="#94a3b8" stroke="#fff" strokeWidth={1} />}
+      dot={false}
     />
-
-    <Line 
-      type="monotone" 
-      dataKey="scenarioProjection" 
-      stroke="#6366f1" 
+    <Line
+      type="monotone"
+      dataKey="scenarioProjection"
+      stroke="#6366f1"
       strokeWidth={3}
       name="Ssenari proqnozu"
-      dot={(props) => <circle {...props} r={5} fill="#6366f1" stroke="#fff" strokeWidth={2} />}
+      dot={false}
     />
   </LineChart>
 
