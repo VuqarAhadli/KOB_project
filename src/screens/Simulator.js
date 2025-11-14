@@ -402,6 +402,11 @@ const ScenarioResults = ({ scenario }) => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  {cards.map(card => (
+    <div className="flex-1 flex flex-col w-full">{card}</div>
+  ))}
+</div>
+
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
               <DollarSign className="w-8 h-8 text-blue-600 mb-2" />
               <p className="text-sm text-blue-700 font-medium mb-1">Hazırki Balans</p>
@@ -429,7 +434,7 @@ const ScenarioResults = ({ scenario }) => {
           </div>
 
           {/* Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-gray-50 rounded-lg p-4 h-full flex flex-col justify-between">
             <div className="bg-gray-50 rounded-lg p-4">
               <h4 className="font-semibold text-gray-800 mb-3">Aylıq Təfərrüatlar</h4>
               <div className="space-y-2 text-sm">
@@ -467,15 +472,17 @@ const ScenarioResults = ({ scenario }) => {
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-200">
                   <span className="text-gray-600">Xərc dəyişikliyi:</span>
-                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact <= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {results.impactAnalysis.expenseImpact >= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
-                  </span>
+                  <span className={`font-semibold ${results.impactAnalysis.revenueImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+  {results.impactAnalysis.revenueImpact >= 0 ? '+' : ''}{results.impactAnalysis.revenueImpact.toLocaleString()} ₼
+</span>
+
                 </div>
                 <div className="flex justify-between py-2 pt-3 border-t-2 border-gray-300">
                   <span className="font-medium text-gray-800">Xalis təsir:</span>
-                  <span className={`font-bold text-lg ${results.impactAnalysis.profitImpact >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                    {results.impactAnalysis.profitImpact >= 0 ? '+' : ''}{results.impactAnalysis.profitImpact.toLocaleString()} ₼
-                  </span>
+                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+  {results.impactAnalysis.expenseImpact <= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
+</span>
+
                 </div>
               </div>
             </div>
@@ -515,13 +522,15 @@ const Simulator = ({ onNavigate }) => {
         </header>
 
         <main className="max-w-7xl mx-auto px-6 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1">
-              <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
-            </div>
-            <div className="lg:col-span-2">
-              <ScenarioResults scenario={currentScenario} />
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+  <div className="lg:col-span-1">
+    <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
+  </div>
+  <div className="lg:col-span-2 flex flex-col gap-6">
+    <ScenarioResults scenario={currentScenario} />
+  </div>
+</div>
+
           </div>
         </main>
       </div>
