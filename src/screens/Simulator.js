@@ -168,7 +168,7 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
       <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
         <h3 className="text-xl font-bold text-white flex items-center">
           <Calculator className="w-6 h-6 mr-2" />
-          Ssenaril Konfiqurasiyası
+          Ssenari Konfiqurasiyası
         </h3>
       </div>
       
@@ -330,7 +330,7 @@ const ScenarioResults = ({ scenario }) => {
     return (
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-12 text-center shadow-inner border border-gray-200">
         <Calculator className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-600 mb-2">Ssenaril Analiz Gözləyir</h3>
+        <h3 className="text-xl font-semibold text-gray-600 mb-2">Ssenari Analiz Gözləyir</h3>
         <p className="text-gray-500">Solda parametrləri dəyişdirərək nəticələri görün</p>
       </div>
     );
@@ -352,7 +352,7 @@ const ScenarioResults = ({ scenario }) => {
               <Tooltip 
                 formatter={(value, name) => [
                   `${value.toLocaleString()} ₼`, 
-                  name === 'originalProjection' ? 'Cari prognoz' : 'Ssenaril prognoz'
+                  name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnoz'
                 ]}
                 contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
               />
@@ -363,7 +363,7 @@ const ScenarioResults = ({ scenario }) => {
                 stroke="#94a3b8" 
                 strokeWidth={2}
                 strokeDasharray="5 5"
-                name="Cari prognoz"
+                name="Cari proqnoz"
                 dot={false}
               />
               <Line 
@@ -371,7 +371,7 @@ const ScenarioResults = ({ scenario }) => {
                 dataKey="scenarioProjection" 
                 stroke="#6366f1" 
                 strokeWidth={3}
-                name="Ssenaril prognoz"
+                name="Ssenari proqnozu"
                 dot={{ fill: '#6366f1', r: 4 }}
               />
             </LineChart>
@@ -498,9 +498,9 @@ const Simulator = ({ onNavigate }) => {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Maliyyə Ssenaril Simulyatoru
+                  Maliyyə Ssenari Simulyatoru
                 </h1>
-                <p className="text-gray-600 mt-1">Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin</p>
+                <p className="text-gray-600 mt-1">Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin</p>
               </div>
               {onNavigate && (
                 <button
