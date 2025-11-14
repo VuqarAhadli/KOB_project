@@ -2,25 +2,12 @@ import { CreditCard, Building } from "lucide-react";
 
 const Subscription = ({ onNavigate }) => (
   <div className="min-h-screen bg-gray-50">
-    <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-900">Premium Paketlər</h1>
-        <button
-          onClick={() => onNavigate("dashboard")}
-          className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
-        >
-          ← Geri
-        </button>
-      </div>
-    </header>
-
     <main className="max-w-7xl mx-auto px-4 py-6">
+      {/* Section Title */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
-          Biznesiniz üçün uyğun planı seçin
-        </h2>
-        <p className="text-xl text-gray-600">
-          Güclü maliyyə idarəetmə alətləri ilə KOB-unuzu böyüdün
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Premium Paketlər</h1>
+        <p className="text-gray-600">
+          Güclü maliyyə idarəetmə alətləri ilə biznesinizi böyüdün
         </p>
       </div>
 
