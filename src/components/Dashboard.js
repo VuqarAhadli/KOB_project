@@ -15,22 +15,6 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <Building className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">MALİMAX</h1>
-          </div>
-          <nav className="flex space-x-6">
-            <button onClick={() => onNavigate('dashboard')} className="px-3 py-2 rounded-lg font-medium text-blue-700 bg-blue-100">Dashboard</button>
-            <button onClick={() => onNavigate('simulator')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">Simulyator</button>
-            <button onClick={() => onNavigate('ai')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">AI Tövsiyəçi</button>
-            <button onClick={() => onNavigate('subscription')} className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900">Premium</button>
-          </nav>
-        </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-6">
