@@ -1,46 +1,7 @@
 import React, { useState, createContext, useContext, useReducer, useMemo } from 'react';
 import { Calculator, Brain, TrendingUp, TrendingDown, AlertTriangle, DollarSign, Info } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
-
-// Generate realistic financial data
-const generateMonthlyData = (year, baseGelir, baseXerc, growthRate = 0, seed = 0) => {
-  const months = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'İyn', 'İyl', 'Avq', 'Sen', 'Okt', 'Noy', 'Dek'];
-  let runningBalance = year === 2022 ? 0 : null;
-  
-  const seededRandom = (s) => {
-    const x = Math.sin(s) * 10000;
-    return x - Math.floor(x);
-  };
-  
-  return months.map((month, index) => {
-    const seasonalMultiplier = 1 + Math.sin(index * Math.PI / 6) * 0.15;
-    const randomVar = 0.85 + seededRandom(seed + year * 100 + index) * 0.3;
-    
-    const gelir = Math.round(baseGelir * seasonalMultiplier * randomVar * (1 + growthRate * index / 12));
-    const xerc = Math.round(baseXerc * (0.95 + seededRandom(seed + year * 100 + index + 0.5) * 0.1) * (1 + growthRate * index / 12 * 0.8));
-    const profit = gelir - xerc;
-    
-    runningBalance = runningBalance === null ? profit : runningBalance + profit;
-    
-    return { month, year, date: `${year}-${String(index + 1).padStart(2, '0')}`, gelir, xerc, profit, balance: Math.round(runningBalance) };
-  });
-};
-
-const data2022 = generateMonthlyData(2022, 35000, 28000, 0.08, 42);
-const data2023 = generateMonthlyData(2023, 45000, 32000, 0.12, 42);
-const data2024 = generateMonthlyData(2024, 52000, 38000, 0.10, 42);
-const data2025 = generateMonthlyData(2025, 58000, 42000, 0.08, 42).slice(0, 11);
-
-data2023[0].balance = data2022[11].balance + data2023[0].profit;
-for (let i = 1; i < data2023.length; i++) data2023[i].balance = data2023[i - 1].balance + data2023[i].profit;
-
-data2024[0].balance = data2023[11].balance + data2024[0].profit;
-for (let i = 1; i < data2024.length; i++) data2024[i].balance = data2024[i - 1].balance + data2024[i].profit;
-
-data2025[0].balance = data2024[11].balance + data2025[0].profit;
-for (let i = 1; i < data2025.length; i++) data2025[i].balance = data2025[i - 1].balance + data2025[i].profit;
-
-const allMonthlyData = [...data2022, ...data2023, ...data2024, ...data2025];
+import { mockFinancialData } from './data/mockFinancialData';
 
 // Financial Context
 const ACTIONS = {
@@ -52,14 +13,12 @@ const ACTIONS = {
 };
 
 const initialState = {
-  monthlyData: allMonthlyData,
-  expenseCategories: [
-    { name: 'Əməkhaqqı', percentage: 38.5, color: '#8884d8' },
-    { name: 'İcarə', percentage: 20.5, color: '#82ca9d' },
-    { name: 'Utilities', percentage: 7.7, color: '#ffc658' },
-    { name: 'Marketing', percentage: 17.9, color: '#ff7300' },
-    { name: 'Digər', percentage: 15.4, color: '#00ff88' }
-  ]
+  monthlyData: mockFinancialData.monthlyData,
+  expenseCategories: mockFinancialData.expenseBreakdown.map(exp => ({
+    name: exp.name,
+    percentage: (exp.value / mockFinancialData.kpi.totalExpenses) * 100,
+    color: exp.color
+  }))
 };
 
 const financialReducer = (state, action) => {
@@ -122,7 +81,7 @@ const useFinancial = () => {
   return context;
 };
 
-// Input Component
+// Input Components
 const SliderInput = ({ label, value, onChange, min, max, step = 1, unit = '%', info }) => (
   <div className="space-y-2">
     <div className="flex items-center justify-between">
@@ -460,4 +419,114 @@ const ScenarioResults = ({ scenario }) => {
               </p>
             </div>
             
-            <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-5 border ${results.newMonthlyProfit >=
+            <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-5 border ${results.newMonthlyProfit >= 0 ? 'border-purple-200' : 'border-orange-200'}`}>
+              <Calculator className={`w-8 h-8 mb-2 ${results.newMonthlyProfit >= 0 ? 'text-purple-600' : 'text-orange-600'}`} />
+              <p className={`text-sm font-medium mb-1 ${results.newMonthlyProfit >= 0 ? 'text-purple-700' : 'text-orange-700'}`}>Yeni Aylıq Mənfəət</p>
+              <p className={`text-2xl font-bold ${results.newMonthlyProfit >= 0 ? 'text-purple-900' : 'text-orange-900'}`}>
+                {results.newMonthlyProfit.toLocaleString()} ₼
+              </p>
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-800 mb-3">Aylıq Təfərrüatlar</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Yeni gəlir:</span>
+                  <span className="font-semibold text-green-600">{results.newMonthlyRevenue.toLocaleString()} ₼</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Yeni xərclər:</span>
+                  <span className="font-semibold text-red-600">{results.newMonthlyExpenses.toLocaleString()} ₼</span>
+                </div>
+                {results.monthlyLoanPayment > 0 && (
+                  <div className="flex justify-between py-1 border-b border-gray-200">
+                    <span className="text-gray-600">Kredit ödənişi:</span>
+                    <span className="font-semibold text-orange-600">{results.monthlyLoanPayment.toLocaleString()} ₼</span>
+                  </div>
+                )}
+                <div className="flex justify-between py-2 pt-3 border-t-2 border-gray-300">
+                  <span className="font-medium text-gray-800">Xalis mənfəət:</span>
+                  <span className={`font-bold text-lg ${results.newMonthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    {results.newMonthlyProfit.toLocaleString()} ₼
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-800 mb-3">İllik Təsir Analizi</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Gəlir dəyişikliyi:</span>
+                  <span className={`font-semibold ${results.impactAnalysis.revenueImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {results.impactAnalysis.revenueImpact >= 0 ? '+' : ''}{results.impactAnalysis.revenueImpact.toLocaleString()} ₼
+                  </span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Xərc dəyişikliyi:</span>
+                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {results.impactAnalysis.expenseImpact >= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
+                  </span>
+                </div>
+                <div className="flex justify-between py-2 pt-3 border-t-2 border-gray-300">
+                  <span className="font-medium text-gray-800">Xalis təsir:</span>
+                  <span className={`font-bold text-lg ${results.impactAnalysis.profitImpact >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    {results.impactAnalysis.profitImpact >= 0 ? '+' : ''}{results.impactAnalysis.profitImpact.toLocaleString()} ₼
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main Simulator
+const Simulator = ({ onNavigate }) => {
+  const [currentScenario, setCurrentScenario] = useState(null);
+
+  return (
+    <FinancialProvider>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+        <header className="bg-white shadow-md border-b border-gray-200 mb-8">
+          <div className="max-w-7xl mx-auto px-6 py-5">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Maliyyə Ssenaril Simulyatoru
+                </h1>
+                <p className="text-gray-600 mt-1">Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin</p>
+              </div>
+              {onNavigate && (
+                <button
+                  onClick={() => onNavigate('dashboard')}
+                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
+                >
+                  ← Ana Səhifə
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-6 pb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
+            </div>
+            <div className="lg:col-span-2">
+              <ScenarioResults scenario={currentScenario} />
+            </div>
+          </div>
+        </main>
+      </div>
+    </FinancialProvider>
+  );
+};
+
+export default Simulator;
