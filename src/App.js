@@ -6,7 +6,7 @@ import { mockFinancialData } from './data/mockFinancialData';
 import Simulator from './screens/Simulator';
 import AIAdvisor from './screens/AIAdvisor';
 import Subscription from './screens/Subscription';
-import Navbar from './components/Navbar';
+import Navbar from './Navbar';
 
 function ProtectedRoute({ children, user }) {
   if (!user) return <Navigate to="/login" replace />;
