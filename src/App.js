@@ -1,42 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import LoginScreen from './components/LoginScreen';
-import Dashboard from './screens/Dashboard';
-import { mockFinancialData } from './data/mockFinancialData'; // create this file for your mock data
-import Simulator from './screens/Simulator';
-import AIAdvisor from './screens/AIAdvisor';
-import Subscription from './screens/Subscription';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import LoginScreen from "./components/LoginScreen";
+import Dashboard from "./screens/Dashboard";
+import { mockFinancialData } from "./data/mockFinancialData";
+import Simulator from "./screens/Simulator";
+import AIAdvisor from "./screens/AIAdvisor";
+import Subscription from "./screens/Subscription";
+import Profile from "./screens/Profile";
 
-function App() {
-  const [currentScreen, setCurrentScreen] = useState('login');
-  const [user, setUser] = useState(null);
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const user = useState(() => {
+    return localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
+  })[0];
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+// Main App Layout
+const AppLayout = () => {
+  const location = useLocation();
   const [animateCards, setAnimateCards] = useState(false);
 
   useEffect(() => {
-    if (currentScreen === 'dashboard') {
+    if (location.pathname === "/dashboard") {
       setTimeout(() => setAnimateCards(true), 300);
     }
-  }, [currentScreen]);
+  }, [location.pathname]);
 
-  const handleLogin = () => {
-    setUser({ name: 'Demo KOB', company: 'Tech Solutions MMC' });
-    setCurrentScreen('dashboard');
-  };
-
-  const handleNavigate = (screen) => setCurrentScreen(screen);
-  if (currentScreen === 'simulator') return <Simulator onNavigate={handleNavigate} />;
-if (currentScreen === 'ai') return <AIAdvisor onNavigate={handleNavigate} />;
-if (currentScreen === 'subscription') return <Subscription onNavigate={handleNavigate} />;
-
-  if (currentScreen === 'login') return <LoginScreen onLogin={handleLogin} />;
-  if (currentScreen === 'dashboard') return (
-    <Dashboard 
-      financialData={mockFinancialData} 
-      animateCards={animateCards} 
-      onNavigate={handleNavigate} 
-    />
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Routes>
+        <Route path="/login" element={<LoginScreen />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard
+                financialData={mockFinancialData}
+                animateCards={animateCards}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/simulator"
+          element={
+            <ProtectedRoute>
+              <Simulator financialData={mockFinancialData} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ai"
+          element={
+            <ProtectedRoute>
+              <AIAdvisor financialData={mockFinancialData} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            <ProtectedRoute>
+              <Subscription />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </div>
   );
+};
 
-  return <div>Screen not implemented yet</div>;
+function App() {
+  return (
+    <Router>
+      <AppLayout />
+    </Router>
+  );
 }
 
 export default App;

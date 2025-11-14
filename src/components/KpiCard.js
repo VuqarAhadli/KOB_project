@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const KpiCard = ({ title, value, icon, change, positive, delay }) => {
   return (
@@ -8,7 +8,11 @@ const KpiCard = ({ title, value, icon, change, positive, delay }) => {
     >
       <div className="flex justify-between items-start mb-4">
         <div className="p-2 bg-gray-50 rounded-lg">{icon}</div>
-        <span className={`text-sm font-medium px-2 py-1 rounded-full ${positive ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}`}>
+        <span
+          className={`text-sm font-medium px-2 py-1 rounded-full ${
+            positive ? "text-green-700 bg-green-100" : "text-red-700 bg-red-100"
+          }`}
+        >
           {change}
         </span>
       </div>
