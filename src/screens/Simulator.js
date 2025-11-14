@@ -357,7 +357,7 @@ const ScenarioResults = ({ scenario }) => {
     contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
   />
   <Legend wrapperStyle={{ fontSize: '12px' }} />
-  
+
   <Line 
     type="monotone" 
     dataKey="originalProjection" 
@@ -365,17 +365,16 @@ const ScenarioResults = ({ scenario }) => {
     strokeWidth={2}
     strokeDasharray="5 5"
     name="Cari proqnoz"
-    dot={false}
+    dot={{ r: 4, fill: '#94a3b8', stroke: '#fff', strokeWidth: 1 }}
   />
-  
+
   <Line 
     type="monotone" 
     dataKey="scenarioProjection" 
     stroke="#6366f1" 
     strokeWidth={3}
     name="Ssenari proqnozu"
-    dot={false} 
-    activeDot={{ r: 5, fill: '#6366f1', stroke: '#fff', strokeWidth: 2 }}
+    dot={{ r: 5, fill: '#6366f1', stroke: '#fff', strokeWidth: 2 }}
   />
 </LineChart>
 
