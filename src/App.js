@@ -18,7 +18,7 @@ function App() {
   }, [currentScreen]);
 
   const handleLogin = () => {
-    setUser({ name: 'Demo KOB', company: 'Tech Solutions MMC' });
+    setUser({ name: 'Demo KOB', company: 'procrastitans' });
     setCurrentScreen('dashboard');
   };
 
