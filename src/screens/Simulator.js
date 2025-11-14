@@ -488,7 +488,7 @@ const ScenarioResults = ({ scenario }) => {
 };
 
 // Main Simulator
-onst Simulator = ({ onNavigate }) => {
+const Simulator = ({ onNavigate }) => {
   const [currentScenario, setCurrentScenario] = useState(null);
 
   return (
@@ -520,3 +520,4 @@ onst Simulator = ({ onNavigate }) => {
     </FinancialProvider>
   );
 };
+export default Simulator;
