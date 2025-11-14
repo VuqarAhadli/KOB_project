@@ -401,11 +401,31 @@ const ScenarioResults = ({ scenario }) => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  {cards.map(card => (
-    <div className="flex-1 flex flex-col w-full">{card}</div>
-  ))}
-</div>
+          const cards = [
+  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
+    <DollarSign className="w-8 h-8 text-blue-600 mb-2" />
+    <p className="text-sm text-blue-700 font-medium mb-1">Hazırki Balans</p>
+    <p className="text-2xl font-bold text-blue-900">{results.currentBalance.toLocaleString()} ₼</p>
+  </div>,
+  <div className={`bg-gradient-to-br ${results.projectedBalance >= results.currentBalance ? 'from-green-50 to-green-100' : 'from-red-50 to-red-100'} rounded-xl p-5 border ${results.projectedBalance >= results.currentBalance ? 'border-green-200' : 'border-red-200'}`}>
+    {results.projectedBalance >= results.currentBalance ? 
+      <TrendingUp className="w-8 h-8 text-green-600 mb-2" /> : 
+      <TrendingDown className="w-8 h-8 text-red-600 mb-2" />
+    }
+    <p className={`text-sm font-medium mb-1 ${results.projectedBalance >= results.currentBalance ? 'text-green-700' : 'text-red-700'}`}>6 Ay Sonra</p>
+    <p className={`text-2xl font-bold ${results.projectedBalance >= results.currentBalance ? 'text-green-900' : 'text-red-900'}`}>
+      {results.projectedBalance.toLocaleString()} ₼
+    </p>
+  </div>,
+  <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-5 border ${results.newMonthlyProfit >= 0 ? 'border-purple-200' : 'border-orange-200'}`}>
+    <Calculator className={`w-8 h-8 mb-2 ${results.newMonthlyProfit >= 0 ? 'text-purple-600' : 'text-orange-600'}`} />
+    <p className={`text-sm font-medium mb-1 ${results.newMonthlyProfit >= 0 ? 'text-purple-700' : 'text-orange-700'}`}>Yeni Aylıq Mənfəət</p>
+    <p className={`text-2xl font-bold ${results.newMonthlyProfit >= 0 ? 'text-purple-900' : 'text-orange-900'}`}>
+      {results.newMonthlyProfit.toLocaleString()} ₼
+    </p>
+  </div>
+];
+
 
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
               <DollarSign className="w-8 h-8 text-blue-600 mb-2" />
