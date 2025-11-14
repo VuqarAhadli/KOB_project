@@ -1,12 +1,12 @@
 import React from 'react';
-import KpiCard from './KpiCard';
-import RevenueExpensesChart from './RevenueExpensesChart';
-import CashflowChart from './CashflowChart';
-import ExpensePieChart from './ExpensePieChart';
-import UpcomingPayments from './UpcomingPayments';
-import { TrendingUp, TrendingDown, DollarSign, Target, Building } from 'lucide-react';
+import KpiCard from '../components/KpiCard';
+import RevenueExpensesChart from '../components/RevenueExpensesChart';
+import CashflowChart from '../components/CashflowChart';
+import ExpensePieChart from '../components/ExpensePieChart';
+import UpcomingPayments from '../components/UpcomingPayments';
+import { TrendingUp, TrendingDown, DollarSign, Target } from 'lucide-react';
 
-const Dashboard = ({ financialData, animateCards, onNavigate }) => {
+const Dashboard = ({ financialData, animateCards }) => {
   const kpis = [
     { title: 'Aylıq Mənfəət', value: `${financialData.kpi.monthlyProfit.toLocaleString()} ₼`, icon: <TrendingUp className="w-6 h-6 text-green-500" />, change: '+12.5%', positive: true },
     { title: 'Nəqd Axını', value: `${financialData.kpi.cashflow.toLocaleString()} ₼`, icon: <DollarSign className="w-6 h-6 text-blue-500" />, change: '+8.2%', positive: true },
@@ -15,8 +15,7 @@ const Dashboard = ({ financialData, animateCards, onNavigate }) => {
   ];
 
   return (
-      </header>
-
+    <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 py-6">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
