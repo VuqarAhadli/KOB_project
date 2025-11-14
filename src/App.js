@@ -6,7 +6,7 @@ import { mockFinancialData } from './data/mockFinancialData';
 import Simulator from './screens/Simulator';
 import AIAdvisor from './screens/AIAdvisor';
 import Subscription from './screens/Subscription';
-import Navbar from './components/Navbar';
+import Navbar from './Navbar';
 
 // Protected Route Component with Navbar
 function ProtectedRoute({ children, user }) {
