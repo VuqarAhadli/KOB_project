@@ -165,21 +165,21 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-        <h3 className="text-xl font-bold text-white flex items-center">
-          <Calculator className="w-6 h-6 mr-2" />
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 sm:px-6 py-4">
+        <h3 className="text-lg sm:text-xl font-bold text-white flex items-center">
+          <Calculator className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
           Ssenari Konfiqurasiyası
         </h3>
       </div>
       
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         {/* Monthly Changes */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2 text-blue-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-500" />
             Aylıq Dəyişikliklər
           </h4>
-          <div className="bg-blue-50 p-4 rounded-lg space-y-4">
+          <div className="bg-blue-50 p-3 sm:p-4 rounded-lg space-y-4">
             <SliderInput
               label="Gəlir dəyişikliyi"
               value={scenario.revenueChange}
@@ -201,11 +201,11 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
         {/* One-time Events */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <DollarSign className="w-5 h-5 mr-2 text-green-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-500" />
             Birdəfəlik Hadisələr
           </h4>
-          <div className="bg-green-50 p-4 rounded-lg space-y-4">
+          <div className="bg-green-50 p-3 sm:p-4 rounded-lg space-y-4">
             <NumberInput
               label="Birdəfəlik gəlir"
               value={scenario.oneTimeIncome}
@@ -225,11 +225,11 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
         {/* Loan Parameters */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <Brain className="w-5 h-5 mr-2 text-purple-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-purple-500" />
             Kredit Parametrləri
           </h4>
-          <div className="bg-purple-50 p-4 rounded-lg space-y-4">
+          <div className="bg-purple-50 p-3 sm:p-4 rounded-lg space-y-4">
             <NumberInput
               label="Kredit məbləği"
               value={scenario.loanAmount}
@@ -328,10 +328,10 @@ const ScenarioResults = ({ scenario }) => {
 
   if (!results) {
     return (
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-12 text-center shadow-inner border border-gray-200">
-        <Calculator className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-600 mb-2">Ssenari Analiz Gözləyir</h3>
-        <p className="text-gray-500">Solda parametrləri dəyişdirərək nəticələri görün</p>
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 sm:p-12 text-center shadow-inner border border-gray-200">
+        <Calculator className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-600 mb-2">Ssenari Analiz Gözləyir</h3>
+        <p className="text-sm sm:text-base text-gray-500">Solda parametrləri dəyişdirərək nəticələri görün</p>
       </div>
     );
   }
@@ -340,15 +340,15 @@ const ScenarioResults = ({ scenario }) => {
     <div className="space-y-6">
       {/* Projection Chart */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-          <h3 className="text-xl font-bold text-white">12 Aylıq Proyeksiya Qrafiki</h3>
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 sm:px-6 py-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white">12 Aylıq Proyeksiya Qrafiki</h3>
         </div>
-        <div className="p-6">
-          <ResponsiveContainer width="100%" height={350}>
+        <div className="p-4 sm:p-6">
+          <ResponsiveContainer width="100%" height={300}>
             <LineChart data={results.projections}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="month" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} />
+              <XAxis dataKey="month" stroke="#6b7280" style={{ fontSize: '12px' }} />
+              <YAxis stroke="#6b7280" tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} style={{ fontSize: '12px' }} />
               <Tooltip 
                 formatter={(value, name) => [
                   `${value.toLocaleString()} ₼`, 
@@ -356,7 +356,7 @@ const ScenarioResults = ({ scenario }) => {
                 ]}
                 contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
               />
-              <Legend />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
               <Line 
                 type="monotone" 
                 dataKey="originalProjection" 
@@ -381,19 +381,19 @@ const ScenarioResults = ({ scenario }) => {
 
       {/* Key Metrics */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-500 to-cyan-600 px-6 py-4">
-          <h3 className="text-xl font-bold text-white">Əsas Göstəricilər</h3>
+        <div className="bg-gradient-to-r from-blue-500 to-cyan-600 px-4 sm:px-6 py-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white">Əsas Göstəricilər</h3>
         </div>
         
-        <div className="p-6">
+        <div className="p-4 sm:p-6 space-y-6">
           {/* Risk Warning */}
           {results.monthsUntilCritical && (
-            <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6">
+            <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4">
               <div className="flex items-start space-x-3">
-                <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-bold text-red-800 mb-1">⚠️ Risk Xəbərdarlığı</h4>
-                  <p className="text-red-700">
+                  <h4 className="font-bold text-red-800 mb-1 text-sm sm:text-base">⚠️ Risk Xəbərdarlığı</h4>
+                  <p className="text-red-700 text-sm">
                     Bu ssenaridə təxminən <strong>{results.monthsUntilCritical} ay</strong> sonra balans mənfi olacaq!
                   </p>
                 </div>
@@ -401,108 +401,82 @@ const ScenarioResults = ({ scenario }) => {
             </div>
           )}
 
-          const cards = [
-  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-    <DollarSign className="w-8 h-8 text-blue-600 mb-2" />
-    <p className="text-sm text-blue-700 font-medium mb-1">Hazırki Balans</p>
-    <p className="text-2xl font-bold text-blue-900">{results.currentBalance.toLocaleString()} ₼</p>
-  </div>,
-  <div className={`bg-gradient-to-br ${results.projectedBalance >= results.currentBalance ? 'from-green-50 to-green-100' : 'from-red-50 to-red-100'} rounded-xl p-5 border ${results.projectedBalance >= results.currentBalance ? 'border-green-200' : 'border-red-200'}`}>
-    {results.projectedBalance >= results.currentBalance ? 
-      <TrendingUp className="w-8 h-8 text-green-600 mb-2" /> : 
-      <TrendingDown className="w-8 h-8 text-red-600 mb-2" />
-    }
-    <p className={`text-sm font-medium mb-1 ${results.projectedBalance >= results.currentBalance ? 'text-green-700' : 'text-red-700'}`}>6 Ay Sonra</p>
-    <p className={`text-2xl font-bold ${results.projectedBalance >= results.currentBalance ? 'text-green-900' : 'text-red-900'}`}>
-      {results.projectedBalance.toLocaleString()} ₼
-    </p>
-  </div>,
-  <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-5 border ${results.newMonthlyProfit >= 0 ? 'border-purple-200' : 'border-orange-200'}`}>
-    <Calculator className={`w-8 h-8 mb-2 ${results.newMonthlyProfit >= 0 ? 'text-purple-600' : 'text-orange-600'}`} />
-    <p className={`text-sm font-medium mb-1 ${results.newMonthlyProfit >= 0 ? 'text-purple-700' : 'text-orange-700'}`}>Yeni Aylıq Mənfəət</p>
-    <p className={`text-2xl font-bold ${results.newMonthlyProfit >= 0 ? 'text-purple-900' : 'text-orange-900'}`}>
-      {results.newMonthlyProfit.toLocaleString()} ₼
-    </p>
-  </div>
-];
-
-
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-              <DollarSign className="w-8 h-8 text-blue-600 mb-2" />
-              <p className="text-sm text-blue-700 font-medium mb-1">Hazırki Balans</p>
-              <p className="text-2xl font-bold text-blue-900">{results.currentBalance.toLocaleString()} ₼</p>
+          {/* Key Metric Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 sm:p-5 border border-blue-200">
+              <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 mb-2" />
+              <p className="text-xs sm:text-sm text-blue-700 font-medium mb-1">Hazırki Balans</p>
+              <p className="text-xl sm:text-2xl font-bold text-blue-900">{results.currentBalance.toLocaleString()} ₼</p>
             </div>
             
-            <div className={`bg-gradient-to-br ${results.projectedBalance >= results.currentBalance ? 'from-green-50 to-green-100' : 'from-red-50 to-red-100'} rounded-xl p-5 border ${results.projectedBalance >= results.currentBalance ? 'border-green-200' : 'border-red-200'}`}>
+            <div className={`bg-gradient-to-br ${results.projectedBalance >= results.currentBalance ? 'from-green-50 to-green-100' : 'from-red-50 to-red-100'} rounded-xl p-4 sm:p-5 border ${results.projectedBalance >= results.currentBalance ? 'border-green-200' : 'border-red-200'}`}>
               {results.projectedBalance >= results.currentBalance ? 
-                <TrendingUp className="w-8 h-8 text-green-600 mb-2" /> : 
-                <TrendingDown className="w-8 h-8 text-red-600 mb-2" />
+                <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 mb-2" /> : 
+                <TrendingDown className="w-6 h-6 sm:w-8 sm:h-8 text-red-600 mb-2" />
               }
-              <p className={`text-sm font-medium mb-1 ${results.projectedBalance >= results.currentBalance ? 'text-green-700' : 'text-red-700'}`}>6 Ay Sonra</p>
-              <p className={`text-2xl font-bold ${results.projectedBalance >= results.currentBalance ? 'text-green-900' : 'text-red-900'}`}>
+              <p className={`text-xs sm:text-sm font-medium mb-1 ${results.projectedBalance >= results.currentBalance ? 'text-green-700' : 'text-red-700'}`}>6 Ay Sonra</p>
+              <p className={`text-xl sm:text-2xl font-bold ${results.projectedBalance >= results.currentBalance ? 'text-green-900' : 'text-red-900'}`}>
                 {results.projectedBalance.toLocaleString()} ₼
               </p>
             </div>
             
-            <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-5 border ${results.newMonthlyProfit >= 0 ? 'border-purple-200' : 'border-orange-200'}`}>
-              <Calculator className={`w-8 h-8 mb-2 ${results.newMonthlyProfit >= 0 ? 'text-purple-600' : 'text-orange-600'}`} />
-              <p className={`text-sm font-medium mb-1 ${results.newMonthlyProfit >= 0 ? 'text-purple-700' : 'text-orange-700'}`}>Yeni Aylıq Mənfəət</p>
-              <p className={`text-2xl font-bold ${results.newMonthlyProfit >= 0 ? 'text-purple-900' : 'text-orange-900'}`}>
+            <div className={`bg-gradient-to-br ${results.newMonthlyProfit >= 0 ? 'from-purple-50 to-purple-100' : 'from-orange-50 to-orange-100'} rounded-xl p-4 sm:p-5 border ${results.newMonthlyProfit >= 0 ? 'border-purple-200' : 'border-orange-200'}`}>
+              <Calculator className={`w-6 h-6 sm:w-8 sm:h-8 mb-2 ${results.newMonthlyProfit >= 0 ? 'text-purple-600' : 'text-orange-600'}`} />
+              <p className={`text-xs sm:text-sm font-medium mb-1 ${results.newMonthlyProfit >= 0 ? 'text-purple-700' : 'text-orange-700'}`}>Yeni Aylıq Mənfəət</p>
+              <p className={`text-xl sm:text-2xl font-bold ${results.newMonthlyProfit >= 0 ? 'text-purple-900' : 'text-orange-900'}`}>
                 {results.newMonthlyProfit.toLocaleString()} ₼
               </p>
             </div>
           </div>
 
           {/* Details */}
-          <div className="bg-gray-50 rounded-lg p-4 h-full flex flex-col justify-between">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-semibold text-gray-800 mb-3">Aylıq Təfərrüatlar</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="bg-gray-50 rounded-lg p-4 sm:p-5">
+              <h4 className="font-semibold text-gray-800 mb-3 sm:mb-4 text-base sm:text-lg">Aylıq Təfərrüatlar</h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Yeni gəlir:</span>
                   <span className="font-semibold text-green-600">{results.newMonthlyRevenue.toLocaleString()} ₼</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Yeni xərclər:</span>
                   <span className="font-semibold text-red-600">{results.newMonthlyExpenses.toLocaleString()} ₼</span>
                 </div>
                 {results.monthlyLoanPayment > 0 && (
-                  <div className="flex justify-between py-1 border-b border-gray-200">
+                  <div className="flex justify-between py-2 border-b border-gray-200">
                     <span className="text-gray-600">Kredit ödənişi:</span>
                     <span className="font-semibold text-orange-600">{results.monthlyLoanPayment.toLocaleString()} ₼</span>
                   </div>
                 )}
-                <div className="flex justify-between py-2 pt-3 border-t-2 border-gray-300">
+                <div className="flex justify-between py-2 sm:py-3 pt-3 sm:pt-4 border-t-2 border-gray-300">
                   <span className="font-medium text-gray-800">Xalis mənfəət:</span>
-                  <span className={`font-bold text-lg ${results.newMonthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                  <span className={`font-bold text-base sm:text-lg ${results.newMonthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
                     {results.newMonthlyProfit.toLocaleString()} ₼
                   </span>
                 </div>
               </div>
             </div>
             
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-semibold text-gray-800 mb-3">İllik Təsir Analizi</h4>
+            <div className="bg-gray-50 rounded-lg p-4 sm:p-5">
+              <h4 className="font-semibold text-gray-800 mb-3 sm:mb-4 text-base sm:text-lg">İllik Təsir Analizi</h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Gəlir dəyişikliyi:</span>
                   <span className={`font-semibold ${results.impactAnalysis.revenueImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.impactAnalysis.revenueImpact >= 0 ? '+' : ''}{results.impactAnalysis.revenueImpact.toLocaleString()} ₼
                   </span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Xərc dəyişikliyi:</span>
-                  <span className={`font-semibold ${results.impactAnalysis.revenueImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-  {results.impactAnalysis.revenueImpact >= 0 ? '+' : ''}{results.impactAnalysis.revenueImpact.toLocaleString()} ₼
-</span>
-
+                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                    {results.impactAnalysis.expenseImpact >= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
+                  </span>
                 </div>
-                <div className="flex justify-between py-2 pt-3 border-t-2 border-gray-300">
+                <div className="flex justify-between py-2 sm:py-3 pt-3 sm:pt-4 border-t-2 border-gray-300">
                   <span className="font-medium text-gray-800">Xalis təsir:</span>
-                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact <= 0 ? 'text-green-600' : 'text-red-600'}`}>
-  {results.impactAnalysis.expenseImpact <= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
-</span>
-
+                  <span className={`font-bold text-base sm:text-lg ${results.impactAnalysis.profitImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {results.impactAnalysis.profitImpact >= 0 ? '+' : ''}{results.impactAnalysis.profitImpact.toLocaleString()} ₼
+                  </span>
                 </div>
               </div>
             </div>
@@ -519,20 +493,20 @@ const Simulator = ({ onNavigate }) => {
 
   return (
     <FinancialProvider>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
-        <header className="bg-white shadow-md border-b border-gray-200 mb-8">
-          <div className="max-w-7xl mx-auto px-6 py-5">
-            <div className="flex justify-between items-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 pb-8">
+        <header className="bg-white shadow-md border-b border-gray-200 mb-6 sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Maliyyə Ssenari Simulyatoru
                 </h1>
-                <p className="text-gray-600 mt-1">Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin</p>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin</p>
               </div>
               {onNavigate && (
                 <button
                   onClick={() => onNavigate('dashboard')}
-                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
+                  className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg text-sm sm:text-base whitespace-nowrap"
                 >
                   ← Ana Səhifə
                 </button>
@@ -541,16 +515,16 @@ const Simulator = ({ onNavigate }) => {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-6 pb-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-  <div className="lg:col-span-1">
-    <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
-  </div>
-  <div className="lg:col-span-2 flex flex-col gap-6">
-    <ScenarioResults scenario={currentScenario} />
-  </div>
-</div>
-
+            <div className="lg:col-span-1">
+              <div className="sticky top-24">
+                <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
+              </div>
+            </div>
+            <div className="lg:col-span-2">
+              <ScenarioResults scenario={currentScenario} />
+            </div>
           </div>
         </main>
       </div>
