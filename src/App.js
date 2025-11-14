@@ -6,16 +6,16 @@ import { mockFinancialData } from './data/mockFinancialData';
 import Simulator from './screens/Simulator';
 import AIAdvisor from './screens/AIAdvisor';
 import Subscription from './screens/Subscription';
-import Navbar from './Navbar';
+import Navbar from './components/Navbar';
 
 // Protected Route Component with Navbar
 function ProtectedRoute({ children, user }) {
   if (!user) return <Navigate to="/login" replace />;
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       {children}
-    </>
+    </div>
   );
 }
 
@@ -28,7 +28,7 @@ function LoginWrapper({ onLogin }) {
   return <LoginScreen onLogin={handleLoginSuccess} />;
 }
 
-function DashboardWrapper({ financialData, animateCards, user }) {
+function DashboardWrapper({ financialData, animateCards }) {
   return <Dashboard financialData={financialData} animateCards={animateCards} />;
 }
 
@@ -48,9 +48,9 @@ function App() {
   const [user, setUser] = useState(null);
   const [animateCards, setAnimateCards] = useState(false);
 
+  // Don't use localStorage - just keep state in memory
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    // Remove localStorage check
   }, []);
 
   useEffect(() => {
@@ -60,12 +60,12 @@ function App() {
   const handleLogin = () => {
     const userData = { name: 'Demo KOB', company: 'procrastitans' };
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    // Don't use localStorage
   };
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    // Don't use localStorage
   };
 
   return (
@@ -83,7 +83,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute user={user}>
-              <DashboardWrapper financialData={mockFinancialData} animateCards={animateCards} user={user} />
+              <DashboardWrapper financialData={mockFinancialData} animateCards={animateCards} />
             </ProtectedRoute>
           }
         />
