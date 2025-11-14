@@ -497,9 +497,12 @@ const Simulator = ({ onNavigate }) => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Title */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-normal break-words">
-  Maliyyə Ssenari Simulyatoru
+           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 relative inline-block">
+  <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text inline-block" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'unset' }}>
+    Maliyyə Ssenari Simulyatoru
+  </span>
 </h1>
+
 
             <p className="text-gray-600 mt-1 text-sm sm:text-base">
               Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin
