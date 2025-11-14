@@ -309,6 +309,12 @@ const ScenarioResults = ({ scenario }) => {
       });
     }
 
+    // Fixed yearly impact logic
+    const revenueImpact = Math.round((newMonthlyRevenue - trends.avgRevenue) * 12);
+    const expenseImpact = Math.round((newMonthlyExpenses - trends.avgExpenses) * 12);
+    const loanImpact = Math.round(monthlyLoanPayment * 12);
+    const profitImpact = revenueImpact - expenseImpact - loanImpact;
+
     return {
       currentBalance,
       projectedBalance: Math.round(projectedBalance),
@@ -319,9 +325,10 @@ const ScenarioResults = ({ scenario }) => {
       monthsUntilCritical,
       projections,
       impactAnalysis: {
-        revenueImpact: Math.round((newMonthlyRevenue - trends.avgRevenue) * 12),
-        expenseImpact: Math.round((newMonthlyExpenses - trends.avgExpenses) * 12),
-        profitImpact: Math.round((newMonthlyProfit - trends.avgProfit) * 12)
+        revenueImpact,
+        expenseImpact,
+        loanImpact,
+        profitImpact
       }
     };
   }, [scenario, calculations]);
@@ -345,50 +352,48 @@ const ScenarioResults = ({ scenario }) => {
         </div>
         <div className="p-4 sm:p-6">
           <ResponsiveContainer width="100%" height={300}>
-           }>
-  <LineChart data={results.projections} isAnimationActive={false}>
-    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-    <XAxis
-      dataKey="month"
-      stroke="#6b7280"
-      style={{ fontSize: '12px' }}
-    />
-    <YAxis
-      stroke="#6b7280"
-      tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
-      style={{ fontSize: '12px' }}
-    />
-    <Tooltip
-      formatter={(value, name) => [
-        `${value.toLocaleString()} ₼`,
-        name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnoz'
-      ]}
-      contentStyle={{
-        backgroundColor: '#fff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '8px'
-      }}
-    />
-    <Legend wrapperStyle={{ fontSize: '12px' }} />
-    <Line
-      type="monotone"
-      dataKey="originalProjection"
-      stroke="#94a3b8"
-      strokeWidth={2}
-      strokeDasharray="5 5"
-      name="Cari proqnoz"
-      dot={false}
-    />
-    <Line
-      type="monotone"
-      dataKey="scenarioProjection"
-      stroke="#6366f1"
-      strokeWidth={3}
-      name="Ssenari proqnozu"
-      dot={false}
-    />
-  </LineChart>
-
+            <LineChart data={results.projections}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                dataKey="month"
+                stroke="#6b7280"
+                style={{ fontSize: '12px' }}
+              />
+              <YAxis
+                stroke="#6b7280"
+                tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
+                style={{ fontSize: '12px' }}
+              />
+              <Tooltip
+                formatter={(value, name) => [
+                  `${value.toLocaleString()} ₼`,
+                  name === 'originalProjection' ? 'Cari proqnoz' : 'Ssenari proqnozu'
+                ]}
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px'
+                }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Line
+                type="monotone"
+                dataKey="originalProjection"
+                stroke="#94a3b8"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                name="Cari proqnoz"
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="scenarioProjection"
+                stroke="#6366f1"
+                strokeWidth={3}
+                name="Ssenari proqnozu"
+                dot={false}
+              />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -401,7 +406,7 @@ const ScenarioResults = ({ scenario }) => {
         
         <div className="p-4 sm:p-6 space-y-6">
           {/* Risk Warning */}
-          {results.monthsUntilCritical && (
+          {results.monthsUntilCritical !== null && results.monthsUntilCritical >= 0 && (
             <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4">
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600 flex-shrink-0 mt-0.5" />
@@ -482,10 +487,18 @@ const ScenarioResults = ({ scenario }) => {
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Xərc dəyişikliyi:</span>
-                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <span className={`font-semibold ${results.impactAnalysis.expenseImpact <= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.impactAnalysis.expenseImpact >= 0 ? '+' : ''}{results.impactAnalysis.expenseImpact.toLocaleString()} ₼
                   </span>
                 </div>
+                {results.impactAnalysis.loanImpact > 0 && (
+                  <div className="flex justify-between py-2 border-b border-gray-200">
+                    <span className="text-gray-600">Kredit ödənişləri:</span>
+                    <span className="font-semibold text-orange-600">
+                      -{results.impactAnalysis.loanImpact.toLocaleString()} ₼
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between py-2 sm:py-3 pt-3 sm:pt-4 border-t-2 border-gray-300">
                   <span className="font-medium text-gray-800">Xalis təsir:</span>
                   <span className={`font-bold text-base sm:text-lg ${results.impactAnalysis.profitImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -511,12 +524,9 @@ const Simulator = ({ onNavigate }) => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Title */}
           <div className="text-center mb-8">
-           <h1 className="text-2xl sm:text-3xl font-bold" style={{ background: 'linear-gradient(to right, #2563eb, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1.2 }}>
-  Maliyyə Ssenari Simulyatoru
-</h1>
-
-
-
+            <h1 className="text-2xl sm:text-3xl font-bold" style={{ background: 'linear-gradient(to right, #2563eb, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1.2 }}>
+              Maliyyə Ssenari Simulyatoru
+            </h1>
             <p className="text-gray-600 mt-1 text-sm sm:text-base">
               Müxtəlif ssenarilərə görə maliyyə vəziyyətinizi analiz edin
             </p>
@@ -537,4 +547,5 @@ const Simulator = ({ onNavigate }) => {
     </FinancialProvider>
   );
 };
+
 export default Simulator;
