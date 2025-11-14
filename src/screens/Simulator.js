@@ -82,7 +82,7 @@ const useFinancial = () => {
 };
 
 // Input Components
-const SliderInput = ({ label, value, onChange, min, max, step = 1, unit = '%', info }) => (
+const SliderInput = ({ label, value, onChange, min, max, step = 1, unit = '%', info, isExpense = false }) => (
   <div className="space-y-2">
     <div className="flex items-center justify-between">
       <label className="text-sm font-medium text-gray-700">{label}</label>
@@ -103,7 +103,7 @@ const SliderInput = ({ label, value, onChange, min, max, step = 1, unit = '%', i
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="flex-1 h-2 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-lg appearance-none cursor-pointer slider"
+        className={`flex-1 h-2 ${isExpense ? 'bg-gradient-to-r from-green-200 via-yellow-200 to-red-200' : 'bg-gradient-to-r from-red-200 via-yellow-200 to-green-200'} rounded-lg appearance-none cursor-pointer slider`}
       />
       <input
         type="number"
@@ -195,6 +195,7 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
               min={-30}
               max={30}
               info={`Cari orta xərc: ${Math.round(trends.avgExpenses).toLocaleString()} ₼/ay`}
+              isExpense={true}
             />
           </div>
         </div>
@@ -500,10 +501,13 @@ const ScenarioResults = ({ scenario }) => {
                   </div>
                 )}
                 <div className="flex justify-between py-2 sm:py-3 pt-3 sm:pt-4 border-t-2 border-gray-300">
-                  <span className="font-medium text-gray-800">Xalis təsir:</span>
+                  <span className="font-medium text-gray-800">Xalis illik təsir:</span>
                   <span className={`font-bold text-base sm:text-lg ${results.impactAnalysis.profitImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.impactAnalysis.profitImpact >= 0 ? '+' : ''}{results.impactAnalysis.profitImpact.toLocaleString()} ₼
                   </span>
+                </div>
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  * İllik təsir = (Gəlir - Xərc - Kredit) × 12 ay
                 </div>
               </div>
             </div>
