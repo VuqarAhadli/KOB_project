@@ -460,19 +460,22 @@ const ScenarioResults = ({ scenario }) => {
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Yeni xərclər:</span>
-                  <span className="font-semibold text-red-600">{results.newMonthlyExpenses.toLocaleString()} ₼</span>
+                  <span className="font-semibold text-red-600">-{results.newMonthlyExpenses.toLocaleString()} ₼</span>
                 </div>
                 {results.monthlyLoanPayment > 0 && (
                   <div className="flex justify-between py-2 border-b border-gray-200">
                     <span className="text-gray-600">Kredit ödənişi:</span>
-                    <span className="font-semibold text-orange-600">{results.monthlyLoanPayment.toLocaleString()} ₼</span>
+                    <span className="font-semibold text-orange-600">-{results.monthlyLoanPayment.toLocaleString()} ₼</span>
                   </div>
                 )}
                 <div className="flex justify-between py-2 sm:py-3 pt-3 sm:pt-4 border-t-2 border-gray-300">
-                  <span className="font-medium text-gray-800">Xalis mənfəət:</span>
+                  <span className="font-medium text-gray-800">Xalis aylıq mənfəət:</span>
                   <span className={`font-bold text-base sm:text-lg ${results.newMonthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                    {results.newMonthlyProfit.toLocaleString()} ₼
+                    {results.newMonthlyProfit >= 0 ? '+' : ''}{results.newMonthlyProfit.toLocaleString()} ₼
                   </span>
+                </div>
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  * Aylıq mənfəət = Gəlir - Xərclər - Kredit
                 </div>
               </div>
             </div>
