@@ -48,9 +48,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [animateCards, setAnimateCards] = useState(false);
 
-  // Don't use localStorage - just keep state in memory
+  // Check for existing session on mount
   useEffect(() => {
-    // Remove localStorage check
+    const savedUser = sessionStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
   }, []);
 
   useEffect(() => {
@@ -60,12 +63,12 @@ function App() {
   const handleLogin = () => {
     const userData = { name: 'Demo KOB', company: 'procrastitans' };
     setUser(userData);
-    // Don't use localStorage
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
-    // Don't use localStorage
+    sessionStorage.removeItem('user');
   };
 
   return (
