@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const navItems = [
     { id: "dashboard", label: "Ana Səhifə", path: "/dashboard" },
-    { id: "data-entry", label: "Məlumat Girişi", path: "/data-entry" },
+    { id: "data-entry", label: "Məlumat İdxal/İxrac", path: "/data-entry" },
     { id: "simulator", label: "Simulyator", path: "/simulator" },
     { id: "ai", label: "AI Tövsiyəçi", path: "/ai" },
     { id: "subscription", label: "Planlar", path: "/subscription" },

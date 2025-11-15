@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useFinancialData } from "../contexts/FinancialDataContext";
 import {
   Plus,
@@ -9,7 +9,18 @@ import {
   TrendingDown,
   AlertCircle,
   CheckCircle,
+  Upload,
+  Download,
+  Loader2,
 } from "lucide-react";
+import {
+  parseExcelFile,
+  parseCSVFile,
+  parseTextFile,
+  parsePDFFile,
+  analyzeImportedDataWithAI,
+  exportToExcel,
+} from "../services/fileImportExportService";
 
 const DataEntry = () => {
   const {
@@ -23,6 +34,9 @@ const DataEntry = () => {
   const [activeTab, setActiveTab] = useState("yearly");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Yearly Data Form - with all 12 months
   const [yearlyForm, setYearlyForm] = useState({
@@ -218,16 +232,197 @@ const DataEntry = () => {
     showSuccess("Xərc kateqoriyası silindi!");
   };
 
+  // File Import Handler
+  const handleFileImport = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setImporting(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      let parsedData;
+
+      // Parse file based on extension
+      switch (fileExtension) {
+        case "xlsx":
+        case "xls":
+          parsedData = await parseExcelFile(file);
+          break;
+        case "csv":
+          parsedData = await parseCSVFile(file);
+          break;
+        case "txt":
+          parsedData = await parseTextFile(file);
+          break;
+        case "pdf":
+          parsedData = await parsePDFFile(file);
+          // PDF parsing returns structured data, use it directly
+          if (parsedData.structured && parsedData.structured.length === 0) {
+            // If no structured data found, use full text for AI analysis
+            parsedData = parsedData.fullText || parsedData.raw;
+          } else if (parsedData.structured) {
+            // Use structured data
+            parsedData = parsedData.structured;
+          }
+          break;
+        default:
+          throw new Error(
+            "Dəstəklənməyən fayl formatı. Excel, CSV, TXT və ya PDF istifadə edin."
+          );
+      }
+
+      // Analyze with AI
+      const analyzedData = await analyzeImportedDataWithAI(
+        parsedData,
+        fileExtension.toUpperCase()
+      );
+
+      // Add monthly data
+      if (analyzedData.monthlyData && analyzedData.monthlyData.length > 0) {
+        analyzedData.monthlyData.forEach((monthData) => {
+          if (monthData.gelir && monthData.xerc) {
+            addYearlyData({
+              year: monthData.year || new Date().getFullYear(),
+              month: monthData.month,
+              gelir: Number(monthData.gelir),
+              xerc: Number(monthData.xerc),
+            });
+          }
+        });
+      }
+
+      // Add expense breakdown
+      if (
+        analyzedData.expenseBreakdown &&
+        analyzedData.expenseBreakdown.length > 0
+      ) {
+        const existingExpenses = [...financialData.expenseBreakdown];
+        analyzedData.expenseBreakdown.forEach((expense) => {
+          const existingIndex = existingExpenses.findIndex(
+            (e) => e.name === expense.name
+          );
+          if (existingIndex >= 0) {
+            existingExpenses[existingIndex] = {
+              name: expense.name,
+              value: Number(expense.value),
+              color: expense.color || "#8884d8",
+            };
+          } else {
+            existingExpenses.push({
+              name: expense.name,
+              value: Number(expense.value),
+              color: expense.color || "#8884d8",
+            });
+          }
+        });
+        updateExpenseBreakdown(existingExpenses);
+      }
+
+      // Add upcoming payments
+      if (
+        analyzedData.upcomingPayments &&
+        analyzedData.upcomingPayments.length > 0
+      ) {
+        analyzedData.upcomingPayments.forEach((payment) => {
+          addUpcomingPayment({
+            title: payment.title,
+            amount: Number(payment.amount),
+            date: payment.date,
+            type: payment.type || "expense",
+            category: payment.category || payment.type || "Digər",
+          });
+        });
+      }
+
+      showSuccess(
+        `Fayl uğurla import edildi! ${analyzedData.summary || ""} (Etibar: ${
+          analyzedData.confidence || "orta"
+        })`
+      );
+    } catch (error) {
+      console.error("Import error:", error);
+      showError(error.message || "Fayl import edilərkən xəta baş verdi");
+    } finally {
+      setImporting(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // Export handlers
+  const handleExportExcel = async () => {
+    setExporting(true);
+    try {
+      await exportToExcel(financialData);
+      showSuccess("Excel faylı uğurla yaradıldı!");
+    } catch (error) {
+      showError(error.message || "Excel faylını yaratmaq mümkün olmadı");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Məlumat Girişi
-          </h1>
-          <p className="text-gray-600">
-            Maliyyə məlumatlarınızı əlavə edin və yeniləyin
-          </p>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Məlumat İdxal/İxrac
+              </h1>
+              <p className="text-gray-600">
+                Maliyyə məlumatlarınızı əlavə edin, import/export edin və
+                yeniləyin
+              </p>
+            </div>
+            <div className="flex gap-3">
+              {/* Import Button */}
+              <div className="relative">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".xlsx,.xls,.csv,.txt,.pdf"
+                  onChange={handleFileImport}
+                  className="hidden"
+                  id="file-import"
+                />
+                <label
+                  htmlFor="file-import"
+                  className={`flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer ${
+                    importing ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {importing ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
+                  <span>{importing ? "Yüklənir..." : "Import"}</span>
+                </label>
+              </div>
+
+              {/* Export Button */}
+              <button
+                onClick={handleExportExcel}
+                disabled={exporting}
+                className={`flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors ${
+                  exporting ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {exporting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                <span>Excel Export</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Success/Error Messages */}
