@@ -15,6 +15,7 @@ import Profile from "./screens/Profile";
 import WalletPage from "./screens/Wallet";
 import DataEntry from "./screens/DataEntry";
 import Navbar from "./Navbar";
+import ChatBubble from "./components/ChatBubble";
 import { FinancialDataProvider } from "./contexts/FinancialDataContext";
 
 // Protected Route Component
@@ -44,11 +45,13 @@ const AppLayout = () => {
   }, [location.pathname]);
 
   const showNavbar = location.pathname !== "/login";
+  const showChat = location.pathname !== "/login";
 
   return (
     <FinancialDataProvider>
       <div className="min-h-screen bg-gray-50">
         {showNavbar && <Navbar />}
+        {showChat && <ChatBubble />}
         <Routes>
           <Route path="/login" element={<LoginScreen />} />
           <Route
