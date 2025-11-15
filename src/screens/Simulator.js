@@ -230,9 +230,9 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-        <h3 className="text-xl font-bold text-white flex items-center">
-          <Calculator className="w-6 h-6 mr-2" />
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 sm:px-6 py-4">
+        <h3 className="text-lg sm:text-xl font-bold text-white flex items-center">
+          <Calculator className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
           Ssenari Konfiqurasiyası
         </h3>
       </div>
@@ -240,11 +240,11 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
       <div className="p-6 space-y-6">
         {/* Monthly Changes */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2 text-blue-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-500" />
             Aylıq Dəyişikliklər
           </h4>
-          <div className="bg-blue-50 p-4 rounded-lg space-y-4">
+          <div className="bg-blue-50 p-3 sm:p-4 rounded-lg space-y-4">
             <SliderInput
               label="Gəlir dəyişikliyi"
               value={scenario.revenueChange}
@@ -270,11 +270,11 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
         {/* One-time Events */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <DollarSign className="w-5 h-5 mr-2 text-green-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-500" />
             Birdəfəlik Hadisələr
           </h4>
-          <div className="bg-green-50 p-4 rounded-lg space-y-4">
+          <div className="bg-green-50 p-3 sm:p-4 rounded-lg space-y-4">
             <NumberInput
               label="Birdəfəlik gəlir"
               value={scenario.oneTimeIncome}
@@ -294,11 +294,11 @@ const CustomScenarioBuilder = ({ onScenarioChange }) => {
 
         {/* Loan Parameters */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center">
-            <Brain className="w-5 h-5 mr-2 text-purple-500" />
+          <h4 className="font-semibold text-gray-800 flex items-center text-sm sm:text-base">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-purple-500" />
             Kredit Parametrləri
           </h4>
-          <div className="bg-purple-50 p-4 rounded-lg space-y-4">
+          <div className="bg-purple-50 p-3 sm:p-4 rounded-lg space-y-4">
             <NumberInput
               label="Kredit məbləği"
               value={scenario.loanAmount}
@@ -398,6 +398,15 @@ const ScenarioResults = ({ scenario }) => {
       });
     }
 
+    // Fixed yearly impact logic
+    const revenueImpact = Math.round(
+      (newMonthlyRevenue - trends.avgRevenue) * 12
+    );
+    const expenseImpact = Math.round(
+      (newMonthlyExpenses - trends.avgExpenses) * 12
+    );
+    const loanImpact = Math.round(monthlyLoanPayment * 12);
+
     return {
       currentBalance,
       projectedBalance: Math.round(projectedBalance),
@@ -408,10 +417,9 @@ const ScenarioResults = ({ scenario }) => {
       monthsUntilCritical,
       projections,
       impactAnalysis: {
-        revenueImpact: Math.round((newMonthlyRevenue - trends.avgRevenue) * 12),
-        expenseImpact: Math.round(
-          (newMonthlyExpenses - trends.avgExpenses) * 12
-        ),
+        revenueImpact,
+        expenseImpact,
+        loanImpact,
         profitImpact: Math.round((newMonthlyProfit - trends.avgProfit) * 12),
       },
     };
@@ -440,8 +448,8 @@ const ScenarioResults = ({ scenario }) => {
             12 Aylıq Proyeksiya Qrafiki
           </h3>
         </div>
-        <div className="p-6">
-          <ResponsiveContainer width="100%" height={350}>
+        <div className="p-4 sm:p-6">
+          <ResponsiveContainer width="100%" height={300}>
             <LineChart data={results.projections}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="month" stroke="#6b7280" />
@@ -478,7 +486,7 @@ const ScenarioResults = ({ scenario }) => {
                 stroke="#6366f1"
                 strokeWidth={3}
                 name="Ssenari proqnozu"
-                dot={{ fill: "#6366f1", r: 4 }}
+                dot={false}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -487,29 +495,32 @@ const ScenarioResults = ({ scenario }) => {
 
       {/* Key Metrics */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-500 to-cyan-600 px-6 py-4">
-          <h3 className="text-xl font-bold text-white">Əsas Göstəricilər</h3>
+        <div className="bg-gradient-to-r from-blue-500 to-cyan-600 px-4 sm:px-6 py-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white">
+            Əsas Göstəricilər
+          </h3>
         </div>
 
         <div className="p-6">
           {/* Risk Warning */}
-          {results.monthsUntilCritical && (
-            <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6">
-              <div className="flex items-start space-x-3">
-                <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-red-800 mb-1">
-                    ⚠️ Risk Xəbərdarlığı
-                  </h4>
-                  <p className="text-red-700">
-                    Bu ssenaridə təxminən{" "}
-                    <strong>{results.monthsUntilCritical} ay</strong> sonra
-                    balans mənfi olacaq!
-                  </p>
+          {results.monthsUntilCritical !== null &&
+            results.monthsUntilCritical >= 0 && (
+              <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-red-800 mb-1">
+                      ⚠️ Risk Xəbərdarlığı
+                    </h4>
+                    <p className="text-red-700">
+                      Bu ssenaridə təxminən{" "}
+                      <strong>{results.monthsUntilCritical} ay</strong> sonra
+                      balans mənfi olacaq!
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
@@ -604,20 +615,20 @@ const ScenarioResults = ({ scenario }) => {
                 Aylıq Təfərrüatlar
               </h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Yeni gəlir:</span>
                   <span className="font-semibold text-green-600">
                     {results.newMonthlyRevenue.toLocaleString()} ₼
                   </span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Yeni xərclər:</span>
                   <span className="font-semibold text-red-600">
                     {results.newMonthlyExpenses.toLocaleString()} ₼
                   </span>
                 </div>
                 {results.monthlyLoanPayment > 0 && (
-                  <div className="flex justify-between py-1 border-b border-gray-200">
+                  <div className="flex justify-between py-2 border-b border-gray-200">
                     <span className="text-gray-600">Kredit ödənişi:</span>
                     <span className="font-semibold text-orange-600">
                       {results.monthlyLoanPayment.toLocaleString()} ₼
@@ -638,6 +649,9 @@ const ScenarioResults = ({ scenario }) => {
                     {results.newMonthlyProfit.toLocaleString()} ₼
                   </span>
                 </div>
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  * Aylıq mənfəət = Gəlir - Xərclər - Kredit
+                </div>
               </div>
             </div>
 
@@ -646,7 +660,7 @@ const ScenarioResults = ({ scenario }) => {
                 İllik Təsir Analizi
               </h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Gəlir dəyişikliyi:</span>
                   <span
                     className={`font-semibold ${
@@ -659,7 +673,7 @@ const ScenarioResults = ({ scenario }) => {
                     {results.impactAnalysis.revenueImpact.toLocaleString()} ₼
                   </span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-gray-200">
+                <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">Xərc dəyişikliyi:</span>
                   <span
                     className={`font-semibold ${
@@ -686,6 +700,9 @@ const ScenarioResults = ({ scenario }) => {
                     {results.impactAnalysis.profitImpact >= 0 ? "+" : ""}
                     {results.impactAnalysis.profitImpact.toLocaleString()} ₼
                   </span>
+                </div>
+                <div className="mt-2 text-xs text-gray-500 italic">
+                  * İllik təsir = (Gəlir - Xərc - Kredit) × 12 ay
                 </div>
               </div>
             </div>
@@ -843,7 +860,9 @@ const Simulator = ({ onNavigate, financialData }) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
-              <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
+              <div className="sticky top-24">
+                <CustomScenarioBuilder onScenarioChange={setCurrentScenario} />
+              </div>
             </div>
             <div className="lg:col-span-2">
               <ScenarioResults scenario={currentScenario} />

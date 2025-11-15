@@ -35,7 +35,9 @@ const ExpensePieChart = ({ data }) => {
               ></div>
               <span className="text-gray-600">{item.name}</span>
             </div>
-            <span className="font-medium">{item.value.toLocaleString()} ₼</span>
+            <span className="text-gray-900 font-medium">
+              {item.value.toLocaleString()} ₼
+            </span>
           </div>
         ))}
       </div>

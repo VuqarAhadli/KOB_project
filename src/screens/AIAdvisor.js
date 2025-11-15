@@ -381,7 +381,6 @@ export const AIRecommendationsList = ({
 
   return (
     <div className="space-y-6">
-      {/* Statistics */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
@@ -408,7 +407,6 @@ export const AIRecommendationsList = ({
         </div>
       </div>
 
-      {/* Recommendations */}
       <div className="space-y-4">
         {recommendations &&
           recommendations.map((recommendation) => (
