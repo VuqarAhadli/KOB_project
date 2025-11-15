@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   CreditCard,
   Building,
@@ -9,10 +8,8 @@ import {
   Shield,
   Star,
 } from "lucide-react";
-import UserMenu from "../components/UserMenu";
 
 const Subscription = () => {
-  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState("freemium");
 
   const plans = [
@@ -98,21 +95,6 @@ const Subscription = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">Premium Paketlər</h1>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-            >
-              ← Geri
-            </button>
-            <UserMenu />
-          </div>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Header Section */}
         <div className="text-center mb-16">

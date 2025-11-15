@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   User,
   Building,
@@ -14,7 +13,6 @@ import {
 } from "lucide-react";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -78,18 +76,6 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">Profil</h1>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-          >
-            ← Geri
-          </button>
-        </div>
-      </header>
-
       <main className="max-w-4xl mx-auto px-4 py-8">
         {success && (
           <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">

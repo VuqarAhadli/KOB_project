@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Building, Menu, X } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Building, Menu, X } from "lucide-react";
+import UserMenu from "./components/UserMenu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -8,10 +9,11 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'dashboard', label: 'Ana Səhifə', path: '/dashboard' },
-    { id: 'simulator', label: 'Simulyator', path: '/simulator' },
-    { id: 'ai', label: 'AI Tövsiyəçi', path: '/ai' },
-    { id: 'subscription', label: 'Planlar', path: '/subscription' }
+    { id: "dashboard", label: "Ana Səhifə", path: "/dashboard" },
+    { id: "data-entry", label: "Məlumat Girişi", path: "/data-entry" },
+    { id: "simulator", label: "Simulyator", path: "/simulator" },
+    { id: "ai", label: "AI Tövsiyəçi", path: "/ai" },
+    { id: "subscription", label: "Planlar", path: "/subscription" },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -29,29 +31,37 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
-                  isActive(item.path)
-                    ? 'text-blue-700 bg-blue-100'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
+          <div className="flex items-center space-x-4">
+            <nav className="hidden md:flex space-x-6">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(item.path)}
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                    isActive(item.path)
+                      ? "text-blue-700 bg-blue-100"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+            <UserMenu />
+          </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <UserMenu />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md border border-gray-300"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -68,8 +78,8 @@ const Navbar = () => {
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors ${
                   isActive(item.path)
-                    ? 'text-blue-700 bg-blue-100'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? "text-blue-700 bg-blue-100"
+                    : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 {item.label}

@@ -16,7 +16,7 @@ const DataEntryScreen = ({
     expenses: {
       emekhaqi: "",
       icare: "",
-      utilities: "",
+      kommunal: "",
       marketing: "",
       diger: "",
     },
@@ -53,7 +53,7 @@ const DataEntryScreen = ({
       expenses: {
         emekhaqi: monthData.expenses?.emekhaqi || "",
         icare: monthData.expenses?.icare || "",
-        utilities: monthData.expenses?.utilities || "",
+        kommunal: monthData.expenses?.kommunal || "",
         marketing: monthData.expenses?.marketing || "",
         diger: monthData.expenses?.diger || "",
       },
@@ -85,15 +85,23 @@ const DataEntryScreen = ({
   };
 
   const totalExpenses =
-    Object.values(formData.expenses).reduce((sum, val) => sum + (parseFloat(val) || 0), 0) +
-    Object.values(formData.taxes).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+    Object.values(formData.expenses).reduce(
+      (sum, val) => sum + (parseFloat(val) || 0),
+      0
+    ) +
+    Object.values(formData.taxes).reduce(
+      (sum, val) => sum + (parseFloat(val) || 0),
+      0
+    );
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">Maliyyə Məlumatları Girişi</h1>
+          <h1 className="text-xl font-bold text-gray-900">
+            Maliyyə Məlumatları Girişi
+          </h1>
           <button
             onClick={() => setCurrentScreen("dashboard")}
             className="text-blue-600 hover:text-blue-700 font-medium"
@@ -106,10 +114,14 @@ const DataEntryScreen = ({
       <main className="max-w-4xl mx-auto px-4 py-6">
         {/* Ay/İl seçimi */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Dövrü seçin</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Dövrü seçin
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Ay</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Ay
+              </label>
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
@@ -124,7 +136,9 @@ const DataEntryScreen = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">İl</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                İl
+              </label>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(parseInt(e.target.value))}
@@ -159,7 +173,9 @@ const DataEntryScreen = ({
               <input
                 type="number"
                 value={formData.gelir}
-                onChange={(e) => setFormData({ ...formData, gelir: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, gelir: e.target.value })
+                }
                 placeholder="0"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -173,14 +189,19 @@ const DataEntryScreen = ({
               <div className="space-y-4">
                 {Object.entries(formData.expenses).map(([key, value]) => (
                   <div key={key}>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{key}</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {key}
+                    </label>
                     <input
                       type="number"
                       value={value}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          expenses: { ...formData.expenses, [key]: e.target.value },
+                          expenses: {
+                            ...formData.expenses,
+                            [key]: e.target.value,
+                          },
                         })
                       }
                       placeholder="0"
@@ -194,12 +215,15 @@ const DataEntryScreen = ({
             {/* Vergilər */}
             <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <AlertCircle className="w-5 h-5 text-orange-500 mr-2" /> Vergilər
+                <AlertCircle className="w-5 h-5 text-orange-500 mr-2" />{" "}
+                Vergilər
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {Object.entries(formData.taxes).map(([key, value]) => (
                   <div key={key}>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{key}</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {key}
+                    </label>
                     <input
                       type="number"
                       value={value}
@@ -222,19 +246,28 @@ const DataEntryScreen = ({
               <h3 className="text-lg font-semibold mb-4">Aylıq Xülasə</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white/10 rounded-lg p-4">
-                  <span className="block text-sm text-blue-100">Ümumi Gəlir</span>
+                  <span className="block text-sm text-blue-100">
+                    Ümumi Gəlir
+                  </span>
                   <span className="text-2xl font-bold">
                     {(parseFloat(formData.gelir) || 0).toLocaleString()} ₼
                   </span>
                 </div>
                 <div className="bg-white/10 rounded-lg p-4">
-                  <span className="block text-sm text-blue-100">Ümumi Xərc</span>
-                  <span className="text-2xl font-bold">{totalExpenses.toLocaleString()} ₼</span>
+                  <span className="block text-sm text-blue-100">
+                    Ümumi Xərc
+                  </span>
+                  <span className="text-2xl font-bold">
+                    {totalExpenses.toLocaleString()} ₼
+                  </span>
                 </div>
                 <div className="bg-white/10 rounded-lg p-4">
                   <span className="block text-sm text-blue-100">Balans</span>
                   <span className="text-2xl font-bold">
-                    {(parseFloat(formData.gelir) || 0 - totalExpenses).toLocaleString()} ₼
+                    {(
+                      parseFloat(formData.gelir) || 0 - totalExpenses
+                    ).toLocaleString()}{" "}
+                    ₼
                   </span>
                 </div>
               </div>

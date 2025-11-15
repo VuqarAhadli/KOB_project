@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Brain,
   Target,
@@ -15,7 +14,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { generateAIRecommendations } from "../services/aiService";
-import UserMenu from "../components/UserMenu";
+import { useFinancialData } from "../contexts/FinancialDataContext";
 
 // AI Recommendation Card Component
 export const AIRecommendationCard = ({
@@ -436,19 +435,11 @@ export const AIRecommendationsList = ({
 };
 
 // Complete AI Advisor Component
-const AIAdvisor = ({ onNavigate, financialData }) => {
-  const navigate = useNavigate();
+const AIAdvisor = ({ onNavigate }) => {
+  const { financialData } = useFinancialData();
   const [aiData, setAiData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const handleNavigate = (path) => {
-    if (onNavigate) {
-      onNavigate(path);
-    } else {
-      navigate(`/${path}`);
-    }
-  };
 
   useEffect(() => {
     const fetchAIRecommendations = async () => {
@@ -479,30 +470,16 @@ const AIAdvisor = ({ onNavigate, financialData }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200 mb-6">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <Brain className="w-7 h-7 text-purple-500" />
-              AI Maliyyə Tövsiyəçisi
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Ağıllı tövsiyələr və avtomatik maliyyə optimizasiyası
-            </p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => handleNavigate("dashboard")}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors shadow-sm"
-            >
-              ← Geri
-            </button>
-            <UserMenu />
-          </div>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto px-4 pb-6 space-y-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Brain className="w-7 h-7 text-purple-500" />
+            AI Maliyyə Tövsiyəçisi
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Ağıllı tövsiyələr və avtomatik maliyyə optimizasiyası
+          </p>
+        </div>
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />

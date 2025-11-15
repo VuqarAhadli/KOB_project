@@ -6,7 +6,6 @@ import React, {
   useMemo,
   useEffect,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Calculator,
   Brain,
@@ -28,9 +27,8 @@ import {
   Line,
   Legend,
 } from "recharts";
-import { mockFinancialData } from "../data/mockFinancialData";
 import { generateAIScenarioSuggestions } from "../services/aiService";
-import UserMenu from "../components/UserMenu";
+import { useFinancialData } from "../contexts/FinancialDataContext";
 
 // Financial Context
 const ACTIONS = {
@@ -41,14 +39,15 @@ const ACTIONS = {
   RESET_DATA: "RESET_DATA",
 };
 
-const initialState = {
-  monthlyData: mockFinancialData.monthlyData,
-  expenseCategories: mockFinancialData.expenseBreakdown.map((exp) => ({
+// Initial state will be set dynamically from context
+const getInitialState = (financialData) => ({
+  monthlyData: financialData.monthlyData,
+  expenseCategories: financialData.expenseBreakdown.map((exp) => ({
     name: exp.name,
-    percentage: (exp.value / mockFinancialData.kpi.totalExpenses) * 100,
+    percentage: (exp.value / financialData.kpi.totalExpenses) * 100,
     color: exp.color,
   })),
-};
+});
 
 const financialReducer = (state, action) => {
   switch (action.type) {
@@ -66,7 +65,7 @@ const financialReducer = (state, action) => {
     case ACTIONS.SET_EXPENSE_CATEGORIES:
       return { ...state, expenseCategories: action.payload };
     case ACTIONS.RESET_DATA:
-      return initialState;
+      return action.payload;
     default:
       return state;
   }
@@ -74,7 +73,8 @@ const financialReducer = (state, action) => {
 
 const FinancialContext = createContext();
 
-const FinancialProvider = ({ children }) => {
+const FinancialProvider = ({ children, initialData }) => {
+  const initialState = getInitialState(initialData);
   const [state, dispatch] = useReducer(financialReducer, initialState);
 
   const calculations = useMemo(() => {
@@ -796,17 +796,9 @@ const AIScenarioSuggestions = ({ financialData, onSelectScenario }) => {
 };
 
 // Main Simulator
-const Simulator = ({ onNavigate, financialData }) => {
-  const navigate = useNavigate();
+const Simulator = ({ onNavigate }) => {
+  const { financialData } = useFinancialData();
   const [currentScenario, setCurrentScenario] = useState(null);
-
-  const handleNavigate = (path) => {
-    if (onNavigate) {
-      onNavigate(path);
-    } else {
-      navigate(`/${path}`);
-    }
-  };
 
   const handleAIScenarioSelect = (aiScenario) => {
     // Convert AI scenario to our scenario format
@@ -823,33 +815,17 @@ const Simulator = ({ onNavigate, financialData }) => {
   };
 
   return (
-    <FinancialProvider>
+    <FinancialProvider initialData={financialData}>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
-        <header className="bg-white shadow-md border-b border-gray-200 mb-8">
-          <div className="max-w-7xl mx-auto px-6 py-5">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Maliyyə Ssenari Simulyatoru
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin
-                </p>
-              </div>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => handleNavigate("dashboard")}
-                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
-                >
-                  ← Ana Səhifə
-                </button>
-                <UserMenu />
-              </div>
-            </div>
-          </div>
-        </header>
-
         <main className="max-w-7xl mx-auto px-6 pb-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Maliyyə Ssenari Simulyatoru
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Müxtəlif Ssenariərə görə maliyyə vəziyyətinizi analiz edin
+            </p>
+          </div>
           {/* AI Scenario Suggestions */}
           {financialData && (
             <AIScenarioSuggestions

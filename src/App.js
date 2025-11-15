@@ -8,12 +8,14 @@ import {
 } from "react-router-dom";
 import LoginScreen from "./components/LoginScreen";
 import Dashboard from "./screens/Dashboard";
-import { mockFinancialData } from "./data/mockFinancialData";
 import Simulator from "./screens/Simulator";
 import AIAdvisor from "./screens/AIAdvisor";
 import Subscription from "./screens/Subscription";
 import Profile from "./screens/Profile";
 import WalletPage from "./screens/Wallet";
+import DataEntry from "./screens/DataEntry";
+import Navbar from "./Navbar";
+import { FinancialDataProvider } from "./contexts/FinancialDataContext";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -41,65 +43,75 @@ const AppLayout = () => {
     }
   }, [location.pathname]);
 
+  const showNavbar = location.pathname !== "/login";
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Routes>
-        <Route path="/login" element={<LoginScreen />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard
-                financialData={mockFinancialData}
-                animateCards={animateCards}
-              />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/simulator"
-          element={
-            <ProtectedRoute>
-              <Simulator financialData={mockFinancialData} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ai"
-          element={
-            <ProtectedRoute>
-              <AIAdvisor financialData={mockFinancialData} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <ProtectedRoute>
-              <Subscription />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/wallet"
-          element={
-            <ProtectedRoute>
-              <WalletPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </div>
+    <FinancialDataProvider>
+      <div className="min-h-screen bg-gray-50">
+        {showNavbar && <Navbar />}
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard animateCards={animateCards} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/data-entry"
+            element={
+              <ProtectedRoute>
+                <DataEntry />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/simulator"
+            element={
+              <ProtectedRoute>
+                <Simulator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai"
+            element={
+              <ProtectedRoute>
+                <AIAdvisor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/subscription"
+            element={
+              <ProtectedRoute>
+                <Subscription />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wallet"
+            element={
+              <ProtectedRoute>
+                <WalletPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </div>
+    </FinancialDataProvider>
   );
 };
 
