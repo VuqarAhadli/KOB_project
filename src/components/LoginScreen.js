@@ -11,6 +11,7 @@ import {
   AlertCircle,
   CheckCircle,
   Wallet,
+  UserCircle,
 } from "lucide-react";
 import {
   connectWallet,
@@ -180,8 +181,10 @@ const LoginScreen = () => {
       <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 w-full max-w-md border border-white/20 shadow-2xl">
         {/* Logo and Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-            <Building className="w-10 h-10 text-white" />
+          <div className="mx-auto mb-4 flex items-center justify-center">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-lg">
+              <UserCircle className="w-12 h-12 text-white" />
+            </div>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">MALİMAX</h1>
           <p className="text-blue-200">Maliyyə idarəetmə platforması</p>

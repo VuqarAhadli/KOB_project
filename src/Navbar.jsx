@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Building, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import UserMenu from "./components/UserMenu";
 
 const Navbar = () => {
@@ -23,11 +23,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <Building className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">MALİMAX</h1>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/dashboard")}
+          >
+            <h1 className="text-2xl md:text-3xl font-bold">
+              <span className="text-blue-600">M</span>
+              <span className="text-gray-900">ALIMAX</span>
+            </h1>
           </div>
 
           {/* Desktop Navigation */}
