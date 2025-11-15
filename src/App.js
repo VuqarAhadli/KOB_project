@@ -13,6 +13,7 @@ import Simulator from "./screens/Simulator";
 import AIAdvisor from "./screens/AIAdvisor";
 import Subscription from "./screens/Subscription";
 import Profile from "./screens/Profile";
+import WalletPage from "./screens/Wallet";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -84,6 +85,14 @@ const AppLayout = () => {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/wallet"
+          element={
+            <ProtectedRoute>
+              <WalletPage />
             </ProtectedRoute>
           }
         />

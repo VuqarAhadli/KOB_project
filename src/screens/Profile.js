@@ -11,19 +11,7 @@ import {
   Lock,
   Calendar,
   Shield,
-  Wallet,
-  Copy,
-  Check,
-  ExternalLink,
 } from "lucide-react";
-import {
-  connectWallet,
-  isMetaMaskInstalled,
-  getCurrentAccount,
-  formatAddress,
-  onAccountsChanged,
-  onChainChanged,
-} from "../services/walletService";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -36,10 +24,6 @@ const Profile = () => {
     phone: "",
   });
   const [success, setSuccess] = useState("");
-  const [walletAddress, setWalletAddress] = useState("");
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [chainId, setChainId] = useState(null);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -52,63 +36,7 @@ const Profile = () => {
         email: parsedUser.email || "",
         phone: parsedUser.phone || "",
       });
-
-      // Check if wallet is already connected
-      if (parsedUser.walletAddress) {
-        setWalletAddress(parsedUser.walletAddress);
-        setChainId(parsedUser.chainId);
-      } else {
-        // Try to get current account
-        getCurrentAccount().then((address) => {
-          if (address) {
-            setWalletAddress(address);
-          }
-        });
-      }
     }
-
-    // Listen for account changes
-    const unsubscribeAccounts = onAccountsChanged((accounts) => {
-      if (accounts.length > 0) {
-        const address = accounts[0];
-        setWalletAddress(address);
-        // Update user data
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          const parsedUser = JSON.parse(userData);
-          const updatedUser = {
-            ...parsedUser,
-            walletAddress: address,
-          };
-          localStorage.setItem("user", JSON.stringify(updatedUser));
-          setUser(updatedUser);
-        }
-      } else {
-        setWalletAddress("");
-      }
-    });
-
-    // Listen for chain changes
-    const unsubscribeChain = onChainChanged((chainId) => {
-      const chainIdNumber = parseInt(chainId, 16);
-      setChainId(chainIdNumber);
-      // Update user data
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        const parsedUser = JSON.parse(userData);
-        const updatedUser = {
-          ...parsedUser,
-          chainId: chainIdNumber,
-        };
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-        setUser(updatedUser);
-      }
-    });
-
-    return () => {
-      if (unsubscribeAccounts) unsubscribeAccounts();
-      if (unsubscribeChain) unsubscribeChain();
-    };
   }, []);
 
   const handleInputChange = (e) => {
@@ -136,79 +64,6 @@ const Profile = () => {
       phone: user?.phone || "",
     });
     setIsEditing(false);
-  };
-
-  const handleConnectWallet = async () => {
-    setIsConnecting(true);
-    setSuccess("");
-    try {
-      if (!isMetaMaskInstalled()) {
-        setSuccess("");
-        alert(
-          "MetaMask yüklənmiş deyil. Zəhmət olmasa MetaMask genişləndirməsini quraşdırın.\n\nMetaMask yükləmək üçün: https://metamask.io"
-        );
-        setIsConnecting(false);
-        return;
-      }
-
-      const walletData = await connectWallet();
-      const { address, chainId: chain } = walletData;
-
-      setWalletAddress(address);
-      setChainId(chain);
-
-      // Update user data
-      const updatedUser = {
-        ...user,
-        walletAddress: address,
-        chainId: chain,
-        provider: user?.provider || "wallet",
-      };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      setSuccess("Cüzdan uğurla bağlandı!");
-      setTimeout(() => setSuccess(""), 3000);
-    } catch (error) {
-      setSuccess("");
-      alert(error.message || "Cüzdan bağlantısında xəta baş verdi.");
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const handleDisconnectWallet = () => {
-    setWalletAddress("");
-    setChainId(null);
-    const updatedUser = {
-      ...user,
-      walletAddress: null,
-      chainId: null,
-    };
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-    setUser(updatedUser);
-    setSuccess("Cüzdan bağlantısı kəsildi");
-    setTimeout(() => setSuccess(""), 3000);
-  };
-
-  const handleCopyAddress = () => {
-    if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const getChainName = (chainId) => {
-    const chains = {
-      1: "Ethereum Mainnet",
-      5: "Goerli Testnet",
-      11155111: "Sepolia Testnet",
-      137: "Polygon",
-      80001: "Mumbai Testnet",
-      56: "BSC",
-      97: "BSC Testnet",
-    };
-    return chains[chainId] || `Chain ID: ${chainId}`;
   };
 
   if (!user) {
@@ -416,120 +271,6 @@ const Profile = () => {
                 Demo rejimdə şifrə dəyişikliyi funksiyası aktiv deyil
               </p>
             </div>
-          </div>
-
-          {/* Wallet Connection Section */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-              <Wallet className="w-5 h-5" />
-              <span>Kripto Cüzdan</span>
-            </h3>
-
-            {walletAddress ? (
-              <div className="space-y-4">
-                <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
-                        <Wallet className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Bağlı cüzdan</p>
-                        <p className="font-mono text-sm font-semibold text-gray-900">
-                          {formatAddress(walletAddress)}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleCopyAddress}
-                      className="p-2 hover:bg-white rounded-lg transition-colors"
-                      title="Kopyala"
-                    >
-                      {copied ? (
-                        <Check className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <Copy className="w-5 h-5 text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-
-                  {chainId && (
-                    <div className="mt-3 pt-3 border-t border-blue-200">
-                      <p className="text-xs text-gray-600 mb-1">Şəbəkə</p>
-                      <p className="text-sm font-medium text-gray-900">
-                        {getChainName(chainId)}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mt-3 flex items-center space-x-2">
-                    <a
-                      href={
-                        chainId === 11155111
-                          ? `https://sepolia.etherscan.io/address/${walletAddress}`
-                          : `https://etherscan.io/address/${walletAddress}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-blue-600 hover:text-blue-800 flex items-center space-x-1"
-                    >
-                      <span>
-                        {chainId === 11155111
-                          ? "Sepolia Etherscan-də görüntülə"
-                          : "Etherscan-də görüntülə"}
-                      </span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleDisconnectWallet}
-                  className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
-                >
-                  <Wallet className="w-4 h-4" />
-                  <span>Cüzdanı ayır</span>
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="text-sm text-gray-600 mb-4">
-                    MetaMask və ya digər Ethereum cüzdanınızı bağlayın
-                  </p>
-                  <button
-                    onClick={handleConnectWallet}
-                    disabled={isConnecting}
-                    className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Wallet className="w-5 h-5" />
-                    <span>
-                      {isConnecting ? "Bağlanır..." : "MetaMask ilə bağla"}
-                    </span>
-                  </button>
-                </div>
-
-                {!isMetaMaskInstalled() && (
-                  <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-sm text-yellow-800 mb-2">
-                      <strong>MetaMask yüklənmiş deyil</strong>
-                    </p>
-                    <p className="text-xs text-yellow-700 mb-3">
-                      MetaMask genişləndirməsini quraşdırmaq üçün:
-                    </p>
-                    <a
-                      href="https://metamask.io"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-blue-600 hover:text-blue-800 flex items-center space-x-1"
-                    >
-                      <span>metamask.io</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </main>

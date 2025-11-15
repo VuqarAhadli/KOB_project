@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, LogOut, ChevronDown } from "lucide-react";
+import { User, LogOut, ChevronDown, Wallet } from "lucide-react";
 
 const UserMenu = () => {
   const navigate = useNavigate();
@@ -71,6 +71,16 @@ const UserMenu = () => {
           >
             <User className="w-4 h-4" />
             <span>Profil</span>
+          </button>
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              navigate("/wallet");
+            }}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 transition-colors"
+          >
+            <Wallet className="w-4 h-4" />
+            <span>Cüzdan</span>
           </button>
           <button
             onClick={handleLogout}
