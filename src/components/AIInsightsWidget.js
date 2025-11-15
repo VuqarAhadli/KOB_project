@@ -41,26 +41,13 @@ const AIInsightsWidget = ({ financialData, onNavigate }) => {
   const getInsightIcon = (iconName) => {
     switch (iconName) {
       case "trending-up":
-        return <TrendingUp className="w-5 h-5 text-green-500" />;
+        return <TrendingUp className="w-5 h-5 text-white" />;
       case "alert-circle":
-        return <AlertCircle className="w-5 h-5 text-orange-500" />;
+        return <AlertCircle className="w-5 h-5 text-white" />;
       case "info":
-        return <Info className="w-5 h-5 text-blue-500" />;
+        return <Info className="w-5 h-5 text-white" />;
       default:
-        return <Brain className="w-5 h-5 text-purple-500" />;
-    }
-  };
-
-  const getInsightColor = (type) => {
-    switch (type) {
-      case "positive":
-        return "bg-green-50 border-green-200 text-green-800";
-      case "warning":
-        return "bg-orange-50 border-orange-200 text-orange-800";
-      case "info":
-        return "bg-blue-50 border-blue-200 text-blue-800";
-      default:
-        return "bg-gray-50 border-gray-200 text-gray-800";
+        return <Brain className="w-5 h-5 text-white" />;
     }
   };
 
@@ -80,16 +67,18 @@ const AIInsightsWidget = ({ financialData, onNavigate }) => {
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 rounded-xl p-6 shadow-lg border border-purple-300 text-white">
+    <div className="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 rounded-xl p-6 shadow-lg border border-purple-400 text-white">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-            <Sparkles className="w-6 h-6" />
+            <Sparkles className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-bold">AI İnsights</h3>
+            <h3 className="text-lg font-bold text-white">AI İnsights</h3>
             {insights.quickTip && (
-              <p className="text-sm text-blue-100 mt-1">{insights.quickTip}</p>
+              <p className="text-sm text-white/90 mt-1 leading-relaxed">
+                {insights.quickTip}
+              </p>
             )}
           </div>
         </div>
@@ -101,7 +90,7 @@ const AIInsightsWidget = ({ financialData, onNavigate }) => {
               navigate("/ai");
             }
           }}
-          className="flex items-center space-x-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-all backdrop-blur-sm"
+          className="flex items-center space-x-1 px-3 py-1.5 bg-white text-gray-800 hover:bg-gray-100 rounded-lg text-sm font-medium transition-all shadow-sm"
         >
           <span>Hamısını gör</span>
           <ChevronRight className="w-4 h-4" />
@@ -114,15 +103,19 @@ const AIInsightsWidget = ({ financialData, onNavigate }) => {
           .map((insight, index) => (
             <div
               key={index}
-              className={`p-3 rounded-lg border backdrop-blur-sm bg-white/10 ${getInsightColor(
-                insight.type
-              )}`}
+              className="p-4 rounded-lg border border-white/30 backdrop-blur-sm bg-white/20 hover:bg-white/30 transition-all"
             >
               <div className="flex items-start space-x-3">
-                <div className="mt-0.5">{getInsightIcon(insight.icon)}</div>
+                <div className="mt-0.5 flex-shrink-0">
+                  {getInsightIcon(insight.icon)}
+                </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold mb-1">{insight.title}</h4>
-                  <p className="text-sm opacity-90">{insight.message}</p>
+                  <h4 className="font-semibold mb-2 text-white text-base">
+                    {insight.title}
+                  </h4>
+                  <p className="text-sm text-white/95 leading-relaxed">
+                    {insight.message}
+                  </p>
                 </div>
               </div>
             </div>
@@ -132,7 +125,7 @@ const AIInsightsWidget = ({ financialData, onNavigate }) => {
       {insights.insights.length > 2 && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-3 w-full text-center text-sm font-medium text-blue-100 hover:text-white transition-colors"
+          className="mt-3 w-full text-center text-sm font-medium text-white hover:text-white/80 transition-colors"
         >
           {expanded
             ? "Daha az göstər"

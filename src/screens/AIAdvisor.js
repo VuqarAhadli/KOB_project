@@ -122,23 +122,23 @@ export const AIRecommendationCard = ({
 
       {/* Potential Impact */}
       {(recommendation.savings || recommendation.potential) && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           {recommendation.savings && (
             <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-blue-700 font-medium">
+              <span className="text-blue-800 font-medium">
                 Potensial qənaət:
               </span>
-              <span className="font-bold text-blue-800 text-lg">
+              <span className="font-bold text-blue-900 text-lg">
                 {recommendation.savings.toLocaleString()} ₼/ay
               </span>
             </div>
           )}
           {recommendation.potential && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-purple-700 font-medium">
+              <span className="text-purple-800 font-medium">
                 Potensial gəlir artımı:
               </span>
-              <span className="font-bold text-purple-800 text-lg">
+              <span className="font-bold text-purple-900 text-lg">
                 +{recommendation.potential.toLocaleString()} ₼/ay
               </span>
             </div>
@@ -251,7 +251,7 @@ export const AIInsightsDashboard = ({ insights, forecast }) => {
     <div className="space-y-6">
       {/* AI Insights */}
       {insights && insights.length > 0 && (
-        <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl p-8 text-white shadow-lg">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white shadow-lg">
           <div className="flex items-center space-x-3 mb-6">
             <Sparkles className="w-8 h-8" />
             <h3 className="text-2xl font-bold">AI Maliyyə Təhlili</h3>
@@ -261,19 +261,21 @@ export const AIInsightsDashboard = ({ insights, forecast }) => {
             {insights.map((insight, index) => (
               <div
                 key={index}
-                className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all"
+                className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all"
               >
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className="p-2 bg-white/10 rounded-lg">
+                  <div className="p-2 bg-white/20 rounded-lg">
                     {getInsightIcon(insight.type)}
                   </div>
-                  <h4 className="font-semibold text-lg">{insight.title}</h4>
+                  <h4 className="font-semibold text-lg text-white">
+                    {insight.title}
+                  </h4>
                 </div>
-                <p className="text-blue-100 text-sm mb-3">
+                <p className="text-white text-sm mb-3 leading-relaxed">
                   {insight.description}
                 </p>
                 {insight.recommendation && (
-                  <p className="text-xs text-blue-200 bg-white/10 rounded p-2">
+                  <p className="text-xs text-white bg-white/20 rounded p-2 leading-relaxed">
                     <strong>💡 Tövsiyə:</strong> {insight.recommendation}
                   </p>
                 )}

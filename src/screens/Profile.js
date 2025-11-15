@@ -85,48 +85,52 @@ const Profile = () => {
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
           {/* Profile Header */}
-          <div className="flex items-center space-x-6 mb-8 pb-8 border-b border-gray-200">
-            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-              {user.name?.charAt(0)?.toUpperCase() || "U"}
-            </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                {user.name || "İstifadəçi"}
-              </h2>
-              <p className="text-gray-600 mb-2">
-                {user.company || "Şirkət adı yoxdur"}
-              </p>
-              <div className="flex items-center space-x-2 text-sm text-gray-500">
-                <Mail className="w-4 h-4" />
-                <span>{user.email || "Email yoxdur"}</span>
+          <div className="flex flex-col md:flex-row md:items-center md:space-x-6 mb-8 pb-8 border-b border-gray-200 space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg flex-shrink-0">
+                {user.name?.charAt(0)?.toUpperCase() || "U"}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                  {user.name || "İstifadəçi"}
+                </h2>
+                <p className="text-gray-600 mb-2">
+                  {user.company || "Şirkət adı yoxdur"}
+                </p>
+                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                  <Mail className="w-4 h-4" />
+                  <span>{user.email || "Email yoxdur"}</span>
+                </div>
               </div>
             </div>
-            {!isEditing ? (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
-              >
-                <Edit className="w-4 h-4" />
-                <span>Redaktə et</span>
-              </button>
-            ) : (
-              <div className="flex space-x-2">
+            <div className="flex-shrink-0">
+              {!isEditing ? (
                 <button
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
+                  onClick={() => setIsEditing(true)}
+                  className="w-full md:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>Saxla</span>
+                  <Edit className="w-4 h-4" />
+                  <span>Redaktə et</span>
                 </button>
-                <button
-                  onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center space-x-2"
-                >
-                  <X className="w-4 h-4" />
-                  <span>Ləğv et</span>
-                </button>
-              </div>
-            )}
+              ) : (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleSave}
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Saxla</span>
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center space-x-2"
+                  >
+                    <X className="w-4 h-4" />
+                    <span>Ləğv et</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Profile Information */}

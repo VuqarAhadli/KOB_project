@@ -31,8 +31,8 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="flex items-center space-x-4">
-            <nav className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center space-x-4">
+            <nav className="flex space-x-6">
               {navItems.map((item) => (
                 <button
                   key={item.id}
