@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 // Initialize Gemini AI
 const getAIClient = () => {
-  const apiKey = "AIzaSyAH4IUjPV46iVgn4m69eUPsBAaz9oSLcxU";
+  const apiKey = "AIzaSyBMH19pRioZrDUb9PQ-IORuJ-XjEWR9Eso";
   if (!apiKey) {
     console.warn("Gemini API key not found. Using fallback mode.");
     return null;
